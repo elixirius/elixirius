@@ -1,4 +1,6 @@
 defmodule ElixiriusWeb.UserResetPasswordController do
+  @moduledoc false
+
   use ElixiriusWeb, :controller
 
   alias Elixirius.Accounts

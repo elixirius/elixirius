@@ -1,4 +1,6 @@
 defmodule ElixiriusWeb.UserConfirmationController do
+  @moduledoc false
+
   use ElixiriusWeb, :controller
 
   alias Elixirius.Accounts

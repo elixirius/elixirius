@@ -16,9 +16,9 @@ config :elixirius, Elixirius.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 if System.get_env("GITHUB_ACTIONS") do
- config :elixirius, Elixirius.Repo,
-   username: "postgres",
-   password: "postgres"
+  config :elixirius, Elixirius.Repo,
+    username: "postgres",
+    password: "postgres"
 end
 
 # We don't run a server during test. If one is required,

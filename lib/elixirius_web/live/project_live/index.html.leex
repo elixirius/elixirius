@@ -1,0 +1,21 @@
+<h2>My Projects</h2>
+
+<%= if @live_action in [:new] do %>
+  <%= live_modal @socket, ElixiriusWeb.ProjectLive.FormComponent,
+    id: @project.id || :new,
+    title: @page_title,
+    action: @live_action,
+    project: @project,
+    current_user: @current_user,
+    return_to: Routes.project_index_path(@socket, :index) %>
+<% end %>
+
+<ul id="projects">
+  <%= for project <- @projects do %>
+    <li id="project-<%= project.id %>">
+      <%= live_redirect project.name, to: Routes.project_show_path(@socket, :show, project.slug) %>
+    </li>
+  <% end %>
+</ul>
+
+<span><%= live_patch "New Project", to: Routes.project_index_path(@socket, :new) %></span>
