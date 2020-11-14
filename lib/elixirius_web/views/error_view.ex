@@ -1,4 +1,6 @@
 defmodule ElixiriusWeb.ErrorView do
+  @moduledoc false
+
   use ElixiriusWeb, :view
 
   # If you want to customize a particular status code

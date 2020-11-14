@@ -31,13 +31,6 @@ defmodule ElixiriusWeb.UserRegistrationControllerTest do
 
       assert get_session(conn, :user_token)
       assert redirected_to(conn) =~ "/"
-
-      # Now do a logged in request and assert on the menu
-      conn = get(conn, "/")
-      response = html_response(conn, 200)
-      assert response =~ name
-      assert response =~ "Settings</a>"
-      assert response =~ "Log out</a>"
     end
 
     test "render errors for invalid data", %{conn: conn} do

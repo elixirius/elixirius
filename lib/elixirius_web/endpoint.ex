@@ -1,4 +1,6 @@
 defmodule ElixiriusWeb.Endpoint do
+  @moduledoc false
+
   use Phoenix.Endpoint, otp_app: :elixirius
 
   # The session will be stored in the cookie and signed,

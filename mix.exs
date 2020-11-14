@@ -10,7 +10,15 @@ defmodule Elixirius.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      name: "Elixirius",
+      source_url: "https://github.com/elixirius/elixirius",
+      homepage_url: "https://elixirius.com",
+      docs: [
+        main: "Elixirius",
+        # logo: "path/to/logo.png", # TODO: Add documentation logo
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -48,7 +56,9 @@ defmodule Elixirius.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:phx_gen_auth, "~> 0.5", only: [:dev], runtime: false}
+      {:phx_gen_auth, "~> 0.5", only: [:dev], runtime: false},
+      {:secure_random, "~> 0.5.1"},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false}
     ]
   end
 

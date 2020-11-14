@@ -1,4 +1,6 @@
 defmodule ElixiriusWeb.Router do
+  @moduledoc false
+
   use ElixiriusWeb, :router
 
   import ElixiriusWeb.UserAuth
@@ -20,7 +22,7 @@ defmodule ElixiriusWeb.Router do
   scope "/", ElixiriusWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    get "/", HomeController, :index
   end
 
   # Other scopes may use custom stacks.
@@ -66,6 +68,17 @@ defmodule ElixiriusWeb.Router do
     put "/profile/settings/update_password", UserSettingsController, :update_password
     put "/profile/settings/update_email", UserSettingsController, :update_email
     get "/profile/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    live "/projects", ProjectLive.Index, :index, session: {__MODULE__, :with_session, []}
+    live "/projects/new", ProjectLive.Index, :new, session: {__MODULE__, :with_session, []}
+    live "/:project_slug", ProjectLive.Show, :show, session: {__MODULE__, :with_session, []}
+
+    live "/:project_slug/setup", ProjectLive.Show, :setup,
+      session: {__MODULE__, :with_session, []}
+  end
+
+  def with_session(conn) do
+    %{"current_user" => conn.assigns.current_user}
   end
 
   scope "/", ElixiriusWeb do
