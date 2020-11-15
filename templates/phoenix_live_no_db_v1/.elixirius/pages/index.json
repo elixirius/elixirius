@@ -1,0 +1,25 @@
+{
+  "type": "Page",
+  "name": "home_page",
+  "props": {
+    "data": {
+      "title": "Elixirius Home Page"
+    },
+  },
+  "children": [
+    {
+      "type": "Heading",
+      "name": "page_header",
+      "props": {
+        "data": {
+          "text": "Welcome to the Elixirius"
+        },
+        "html_tag": "h1",
+        "view": {
+          "size": "36px",
+          "color": "blue",
+        }
+      }
+    }
+  ]
+}
