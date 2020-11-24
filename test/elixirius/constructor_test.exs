@@ -4,7 +4,7 @@ defmodule Elixirius.ConstructorTest do
   import Elixirius.Helpers.FileSystem
 
   alias Elixirius.Constructor
-  alias Elixirius.Constructor.{App, Page}
+  alias Elixirius.Constructor.{App, Page, Element}
 
   setup do
     clear_test_projects()
@@ -22,7 +22,6 @@ defmodule Elixirius.ConstructorTest do
   end
 
   describe "init_app/2" do
-    @tag :focus # <====== REMOVE ME!!!
     test "initiate new config skeleton" do
       project_slug = generate_unique_project_slug()
       {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
@@ -79,13 +78,15 @@ defmodule Elixirius.ConstructorTest do
   describe "add_page/3" do
     test "create page config" do
       project_slug = generate_unique_project_slug()
-      {:ok, page} = Constructor.add_page(project_slug, "index")
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
 
       assert page == %Page{
                name: "index",
                project: project_slug,
                url: "/",
-               path: "projects/#{project_slug}/.elixirius/pages/index.json"
+               path: "projects/#{project_slug}/.elixirius/pages/index.json",
+               elements: []
              }
 
       # Creates json config file
@@ -96,7 +97,39 @@ defmodule Elixirius.ConstructorTest do
                "name" => "index",
                "path" => "projects/#{project_slug}/.elixirius/pages/index.json",
                "project" => project_slug,
-               "url" => "/"
+               "url" => "/",
+               "elements" => []
+             }
+    end
+  end
+
+  describe "add_element/3" do
+    test "add element into page config" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Header")
+
+      assert page == %Page{
+               name: "index",
+               project: project_slug,
+               url: "/",
+               path: "projects/#{project_slug}/.elixirius/pages/index.json",
+               elements: [%Element{type: "Header", name: "header_1"}]
+             }
+
+      # Creates json config file
+      {:ok, file} = File.read("projects/#{project_slug}/.elixirius/pages/index.json")
+      {:ok, json} = Jason.decode(file)
+
+      assert json == %{
+               "name" => "index",
+               "path" => "projects/#{project_slug}/.elixirius/pages/index.json",
+               "project" => project_slug,
+               "url" => "/",
+               "elements" => [
+                 %{"type" => "Header", "name" => "header_1", "data" => %{}, "view" => %{}}
+               ]
              }
     end
   end

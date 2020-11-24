@@ -1,1 +1,1 @@
-alias Elixirius.{Repo, Workshop, Constructor, Bootstrap}
+alias Elixirius.{Repo, Workshop, Constructor, Template}

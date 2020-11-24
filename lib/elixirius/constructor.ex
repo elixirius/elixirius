@@ -1,13 +1,13 @@
 defmodule Elixirius.Constructor do
   @moduledoc """
-  Init Elixirius app configuration within a new project and manage it
-
-  ```elixir
-  alias Elixirius.Constructor
-  ```
+  Init Elixirius app configuration within a new project and manage it:
+    - initiate new projects
+    - manage pages
+    - manage page elements
+    - etc
   """
 
-  alias Elixirius.Constructor.{App, Page}
+  alias Elixirius.Constructor.{App, Page, Element}
 
   @doc """
   Returns current elixirius app version.
@@ -40,12 +40,12 @@ defmodule Elixirius.Constructor do
       iex> {:error, :already_exists} = Constructor.init_app("sample-app")
   """
   def init_app(project_slug, project_name) do
-    attrs = %{name: project_name, constructor_version: current_version()}
+    attrs = %{constructor_version: current_version()}
 
-    with {:ok, app} <- App.new(project_slug, attrs),
+    with {:ok, app} <- App.new(project_slug, project_name, attrs),
          {:ok, app} <- App.init_dir(app),
          {:ok, app} <- App.save(app),
-         {:ok, _page} <- add_page(app.slug, "index") do
+         {:ok, _page} <- add_page(app, "index") do
       {:ok, app}
     else
       error -> error
@@ -73,20 +73,38 @@ defmodule Elixirius.Constructor do
   Create new page
 
   ## Examples
-      iex> {:ok, page} = Constructor.add_page("sample-app", "index")
+      iex> {:ok, app} = Constructor.get_app("sample-app")
+      iex> {:ok, page} = Constructor.add_page(app, "index")
       iex> page
       %Page{project: "sample-app", name: "index"}
 
 
   ## Errros
-      # When the app is not exists
-      iex> {:error, :not_exists} = Constructor.add_page("missing-app", "index")
-
-      # When the page is not unique
-      iex> {:error, :already_exists} = Constructor.add_page("sample-app", "existing_page")
+      # Page is not unique
+      iex> {:error, :already_exists} = Constructor.add_page(app, "existing_page")
   """
-  def add_page(project_slug, page_name) do
-    with {:ok, page} <- Page.new(project_slug, page_name),
+  def add_page(%App{} = app, page_name) do
+    with {:ok, page} <- Page.new(app.slug, page_name),
+         {:ok, page} <- Page.save(page) do
+      {:ok, page}
+    else
+      error -> error
+    end
+  end
+
+  @doc """
+  Add an element to the page
+
+  ## Examples
+      iex> {:ok, app} = Constructor.get_app("sample-app")
+      iex> {:ok, page} = Constructor.get_page(app, "index")
+      iex> {:ok, page} = Constructor.add_element(page, "")
+      iex> page
+      %Page{project: "sample-app", name: "index", elements: %Element{type: "Header", name: "header_1"}}
+  """
+  def add_element(%Page{} = page, element_type, opts \\ %{}) do
+    with {:ok, element} <- Element.new(element_type, "header_1"),
+         {:ok, page} <- Page.add_element(page, element),
          {:ok, page} <- Page.save(page) do
       {:ok, page}
     else
@@ -95,18 +113,18 @@ defmodule Elixirius.Constructor do
   end
 
   # TODO
-  # def add_page_elem(project_slug, page_name, elem_name, opts \\ []) do
+  # def update_element(page, elem_name, opts \\ []) do
   # end
 
   # TODO
-  # def update_page_elem(project_slug, page_name, elem_name, opts \\ []) do
+  # def remove_element(page, elem_name, opts \\ []) do
   # end
 
   # TODO
-  # def remove_page_elem(project_slug, page_name, elem_name, opts \\ []) do
+  # def get_element(page, page_name) do
   # end
 
   # TODO
-  # def get_page_elem(project_slug, page_name) do
+  # def generate_unique_element_name(page, element_type) do
   # end
 end

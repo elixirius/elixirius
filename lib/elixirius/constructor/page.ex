@@ -1,8 +1,9 @@
 defmodule Elixirius.Constructor.Page do
   @moduledoc false
   @derive Jason.Encoder
+  @enforce_keys [:project, :name, :path]
 
-  defstruct project: nil, name: nil, path: nil, url: nil
+  defstruct project: nil, name: nil, path: nil, url: nil, elements: []
 
   def new(project_slug, page_name, attrs \\ %{}) do
     page =
@@ -26,6 +27,10 @@ defmodule Elixirius.Constructor.Page do
       :ok -> {:ok, page}
       error -> error
     end
+  end
+
+  def add_element(%__MODULE__{} = page, element) do
+    {:ok, page |> Map.merge(%{elements: [element | page.elements]})}
   end
 
   @path_delim "/"

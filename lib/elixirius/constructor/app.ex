@@ -2,6 +2,7 @@ defmodule Elixirius.Constructor.App do
   @moduledoc false
 
   @derive Jason.Encoder
+  @enforce_keys [:slug, :name, :workdir_path]
 
   defstruct slug: nil,
             name: nil,
@@ -14,10 +15,11 @@ defmodule Elixirius.Constructor.App do
   @app_filename "app.json"
   @path_delim "/"
 
-  def new(slug, attrs \\ %{}) do
+  def new(slug, name, attrs \\ %{}) do
     app =
       %__MODULE__{
         slug: slug,
+        name: name,
         workdir_path: "#{@projects}/#{slug}/#{@elixirius_dir}"
       }
       |> Map.merge(attrs)
@@ -48,7 +50,7 @@ defmodule Elixirius.Constructor.App do
     with app_path <- build_app_path(project_slug),
          {:ok, file_data} <- File.read(app_path),
          {:ok, json} <- Jason.decode(file_data, keys: :atoms) do
-      new(project_slug, json)
+      new(project_slug, json["name"], json)
     else
       {:error, :enoent} -> {:error, :not_exists}
       error -> error
