@@ -7,7 +7,7 @@ defmodule Elixirius.Constructor do
     - etc
   """
 
-  alias Elixirius.Constructor.{App, Page, Element}
+  alias Elixirius.Constructor.{App, Page, Element, Repo}
 
   @doc """
   Returns current elixirius app version.
@@ -43,8 +43,8 @@ defmodule Elixirius.Constructor do
     attrs = %{constructor_version: current_version()}
 
     with {:ok, app} <- App.new(project_slug, project_name, attrs),
-         {:ok, app} <- App.init_dir(app),
-         {:ok, app} <- App.save(app),
+         {:ok, app} <- Repo.init_store(app),
+         {:ok, app} <- Repo.save(app),
          {:ok, _page} <- add_page(app, "index") do
       {:ok, app}
     else
@@ -66,7 +66,7 @@ defmodule Elixirius.Constructor do
       iex> {:error, :not_exists} = Constructor.get_app("missing-app")
   """
   def get_app(project_slug) do
-    App.read(project_slug)
+    Repo.get_app(project_slug)
   end
 
   @doc """
@@ -85,7 +85,7 @@ defmodule Elixirius.Constructor do
   """
   def add_page(%App{} = app, page_name) do
     with {:ok, page} <- Page.new(app.slug, page_name),
-         {:ok, page} <- Page.save(page) do
+         {:ok, page} <- Repo.save(page) do
       {:ok, page}
     else
       error -> error
@@ -105,7 +105,7 @@ defmodule Elixirius.Constructor do
   def add_element(%Page{} = page, element_type, opts \\ %{}) do
     with {:ok, element} <- Element.new(element_type, "header_1"),
          {:ok, page} <- Page.add_element(page, element),
-         {:ok, page} <- Page.save(page) do
+         {:ok, page} <- Repo.save(page) do
       {:ok, page}
     else
       error -> error

@@ -29,7 +29,6 @@ defmodule Elixirius.ConstructorTest do
       assert app == %App{
                name: "SampleApp",
                slug: project_slug,
-               workdir_path: "projects/#{project_slug}/.elixirius",
                constructor_version: Constructor.current_version(),
                deps: %{components: []}
              }
@@ -42,7 +41,6 @@ defmodule Elixirius.ConstructorTest do
                "deps" => %{"components" => []},
                "constructor_version" => Constructor.current_version(),
                "name" => "SampleApp",
-               "workdir_path" => "projects/#{project_slug}/.elixirius",
                "slug" => project_slug
              }
 
@@ -84,8 +82,6 @@ defmodule Elixirius.ConstructorTest do
       assert page == %Page{
                name: "index",
                project: project_slug,
-               url: "/",
-               path: "projects/#{project_slug}/.elixirius/pages/index.json",
                elements: []
              }
 
@@ -95,9 +91,7 @@ defmodule Elixirius.ConstructorTest do
 
       assert json == %{
                "name" => "index",
-               "path" => "projects/#{project_slug}/.elixirius/pages/index.json",
                "project" => project_slug,
-               "url" => "/",
                "elements" => []
              }
     end
@@ -113,8 +107,6 @@ defmodule Elixirius.ConstructorTest do
       assert page == %Page{
                name: "index",
                project: project_slug,
-               url: "/",
-               path: "projects/#{project_slug}/.elixirius/pages/index.json",
                elements: [%Element{type: "Header", name: "header_1"}]
              }
 
@@ -124,9 +116,7 @@ defmodule Elixirius.ConstructorTest do
 
       assert json == %{
                "name" => "index",
-               "path" => "projects/#{project_slug}/.elixirius/pages/index.json",
                "project" => project_slug,
-               "url" => "/",
                "elements" => [
                  %{
                    "type" => "Header",
