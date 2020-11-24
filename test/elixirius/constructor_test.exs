@@ -22,6 +22,7 @@ defmodule Elixirius.ConstructorTest do
   end
 
   describe "init_app/2" do
+    @tag :focus # <====== REMOVE ME!!!
     test "initiate new config skeleton" do
       project_slug = generate_unique_project_slug()
       {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
@@ -45,6 +46,9 @@ defmodule Elixirius.ConstructorTest do
                "workdir_path" => "projects/#{project_slug}/.elixirius",
                "slug" => project_slug
              }
+
+      # Creates index page json file
+      assert File.exists?("projects/#{project_slug}/.elixirius/pages/index.json")
     end
 
     test "error if project already exists" do

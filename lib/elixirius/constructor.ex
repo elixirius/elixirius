@@ -44,7 +44,8 @@ defmodule Elixirius.Constructor do
 
     with {:ok, app} <- App.new(project_slug, attrs),
          {:ok, app} <- App.init_dir(app),
-         {:ok, app} <- App.save(app) do
+         {:ok, app} <- App.save(app),
+         {:ok, _page} <- add_page(app.slug, "index") do
       {:ok, app}
     else
       error -> error
@@ -103,5 +104,9 @@ defmodule Elixirius.Constructor do
 
   # TODO
   # def remove_page_elem(project_slug, page_name, elem_name, opts \\ []) do
+  # end
+
+  # TODO
+  # def get_page_elem(project_slug, page_name) do
   # end
 end
