@@ -1,6 +1,10 @@
 defmodule Elixirius.Workshop do
   @moduledoc """
-  The Workshop context.
+  Manage users projects
+
+  ```elixir
+  alias Elixirius.Workshop
+  ```
   """
   alias Elixirius.Repo
   alias Elixirius.Workshop.{Project, ProjectQuery}
