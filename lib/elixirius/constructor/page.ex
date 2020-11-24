@@ -17,10 +17,11 @@ defmodule Elixirius.Constructor.Page do
   end
 
   def add_element(%__MODULE__{} = page, element) do
-    updated_page =
-      page
-      |> Map.merge(%{elements: [element | page.elements]})
-
-    {:ok, updated_page}
+    page.elements
+    |> Enum.any?(&(&1.name == element.name))
+    |> case do
+      true -> {:error, :already_exists}
+      false -> {:ok, Map.merge(page, %{elements: [element | page.elements]})}
+    end
   end
 end

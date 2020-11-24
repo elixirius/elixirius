@@ -128,5 +128,15 @@ defmodule Elixirius.ConstructorTest do
                ]
              }
     end
+
+    test "can not add element with the same name" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Header")
+      {:error, msg} = Constructor.add_element(page, "Header")
+
+      assert msg == :already_exists
+    end
   end
 end

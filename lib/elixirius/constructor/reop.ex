@@ -28,7 +28,7 @@ defmodule Elixirius.Constructor.Repo do
     end
   end
 
-   def save(%Page{} = page) do
+  def save(%Page{} = page) do
     page
     |> build_page_path()
     |> init_page_dir()
