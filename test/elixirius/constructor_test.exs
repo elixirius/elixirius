@@ -128,7 +128,13 @@ defmodule Elixirius.ConstructorTest do
                "project" => project_slug,
                "url" => "/",
                "elements" => [
-                 %{"type" => "Header", "name" => "header_1", "data" => %{}, "view" => %{}}
+                 %{
+                   "type" => "Header",
+                   "name" => "header_1",
+                   "data" => %{},
+                   "view" => %{},
+                   "parent" => nil
+                 }
                ]
              }
     end
