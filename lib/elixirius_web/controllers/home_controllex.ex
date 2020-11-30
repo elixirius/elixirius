@@ -7,7 +7,7 @@ defmodule ElixiriusWeb.HomeController do
     render(conn, "index.html")
   end
 
-  def index(%{assigns: %{current_user: user}} = conn, _params) do
+  def index(%{assigns: %{current_user: _user}} = conn, _params) do
     redirect(conn, to: "/projects")
   end
 end

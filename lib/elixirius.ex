@@ -1,5 +1,5 @@
 defmodule Elixirius do
   @moduledoc """
-  Welcome, to Elixirius
+  Welcome to the Elixirius
   """
 end

@@ -13,7 +13,8 @@ config :elixirius, Elixirius.Repo,
   # password: "postgres",
   database: "elixirius_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  ownership_timeout: 999_999_999
 
 if System.get_env("GITHUB_ACTIONS") do
   config :elixirius, Elixirius.Repo,

@@ -4,7 +4,7 @@ defmodule Elixirius.Workshop.Project do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Accounts.User
+  alias Elixirius.Accounts.User
 
   schema "projects" do
     field :name, :string
