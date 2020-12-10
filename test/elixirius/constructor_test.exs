@@ -27,7 +27,7 @@ defmodule Elixirius.ConstructorTest do
       {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
 
       assert app == %App{
-               name: "SampleApp",
+               id: "SampleApp",
                slug: project_slug,
                constructor_version: Constructor.current_version(),
                deps: %{components: []}
@@ -40,7 +40,7 @@ defmodule Elixirius.ConstructorTest do
       assert json == %{
                "deps" => %{"components" => []},
                "constructor_version" => Constructor.current_version(),
-               "name" => "SampleApp",
+               "id" => "SampleApp",
                "slug" => project_slug
              }
 
@@ -80,7 +80,7 @@ defmodule Elixirius.ConstructorTest do
       {:ok, page} = Constructor.add_page(app, "index")
 
       assert page == %Page{
-               name: "index",
+               id: "index",
                project: project_slug,
                elements: []
              }
@@ -90,7 +90,7 @@ defmodule Elixirius.ConstructorTest do
       {:ok, json} = Jason.decode(file)
 
       assert json == %{
-               "name" => "index",
+               "id" => "index",
                "project" => project_slug,
                "elements" => []
              }
@@ -105,9 +105,9 @@ defmodule Elixirius.ConstructorTest do
       {:ok, page} = Constructor.add_element(page, "Header")
 
       assert page == %Page{
-               name: "index",
+               id: "index",
                project: project_slug,
-               elements: [%Element{type: "Header", name: "header_1"}]
+               elements: [%Element{type: "Header", id: "header_1", position: 0}]
              }
 
       # Creates json config file
@@ -115,28 +115,82 @@ defmodule Elixirius.ConstructorTest do
       {:ok, json} = Jason.decode(file)
 
       assert json == %{
-               "name" => "index",
+               "id" => "index",
                "project" => project_slug,
                "elements" => [
                  %{
                    "type" => "Header",
-                   "name" => "header_1",
+                   "id" => "header_1",
                    "data" => %{},
                    "view" => %{},
-                   "parent" => nil
+                   "parent" => nil,
+                   "position" => 0
                  }
                ]
              }
     end
 
-    test "can not add element with the same name" do
+    test "add element into position and parent scope" do
       project_slug = generate_unique_project_slug()
       {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
-      {:ok, page} = Constructor.add_element(page, "Header")
-      {:error, msg} = Constructor.add_element(page, "Header")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box")
 
-      assert msg == :already_exists
+      assert page.elements == [
+               %Element{type: "Box", id: "box_1", position: 0},
+               %Element{type: "Box", id: "box_2", position: 1}
+             ]
+
+      {:ok, page} = Constructor.add_element(page, "Box", %{position: 5})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_1", position: 0},
+               %Element{type: "Box", id: "box_2", position: 1},
+               %Element{type: "Box", id: "box_3", position: 2}
+             ]
+
+      {:ok, page} = Constructor.add_element(page, "Box", %{position: 1})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_1", position: 0},
+               %Element{type: "Box", id: "box_4", position: 1},
+               %Element{type: "Box", id: "box_2", position: 2},
+               %Element{type: "Box", id: "box_3", position: 3}
+             ]
+
+      {:ok, page} = Constructor.add_element(page, "Box", %{parent: "box_1"})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_1", position: 0},
+               %Element{type: "Box", id: "box_4", position: 1},
+               %Element{type: "Box", id: "box_2", position: 2},
+               %Element{type: "Box", id: "box_3", position: 3},
+               %Element{type: "Box", id: "box_5", position: 0, parent: "box_1"}
+             ]
+
+      {:ok, page} = Constructor.add_element(page, "Box", %{parent: "box_1"})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_1", position: 0},
+               %Element{type: "Box", id: "box_4", position: 1},
+               %Element{type: "Box", id: "box_2", position: 2},
+               %Element{type: "Box", id: "box_3", position: 3},
+               %Element{type: "Box", id: "box_5", position: 0, parent: "box_1"},
+               %Element{type: "Box", id: "box_6", position: 1, parent: "box_1"}
+             ]
+
+      {:ok, page} = Constructor.add_element(page, "Box", %{parent: "box_1", position: 1})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_1", position: 0},
+               %Element{type: "Box", id: "box_4", position: 1},
+               %Element{type: "Box", id: "box_2", position: 2},
+               %Element{type: "Box", id: "box_3", position: 3},
+               %Element{type: "Box", id: "box_5", position: 0, parent: "box_1"},
+               %Element{type: "Box", id: "box_7", position: 1, parent: "box_1"},
+               %Element{type: "Box", id: "box_6", position: 2, parent: "box_1"}
+             ]
     end
   end
 end

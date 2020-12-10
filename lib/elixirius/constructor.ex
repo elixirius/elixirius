@@ -25,7 +25,7 @@ defmodule Elixirius.Constructor do
   end
 
   @doc """
-  Initiate new app app for a given project slug and name.
+  Initiate new app app for a given project slug and id.
 
   - Create app file in given project dir as `/projects/sample-app/.elixirius/app.json`
   - TODO: Create home page as `/projects/sample-app/.elixirius/pages/index.json`
@@ -33,19 +33,19 @@ defmodule Elixirius.Constructor do
   ## Examples
       iex> {:ok, app} = Constructor.init_app("sample-app", "SampleApp")
       iex> app
-      %App{name: "SampleApp", slug: "sample-app", path: "projects/sample-app/.elixirius", ...}
+      %App{id: "SampleApp", slug: "sample-app", path: "projects/sample-app/.elixirius", ...}
 
   ## Errros
       # When the app already exists constructor tries to avoid a rewrite
       iex> {:error, :already_exists} = Constructor.init_app("sample-app")
   """
-  def init_app(project_slug, project_name) do
+  def init_app(project_slug, project_id) do
     attrs = %{constructor_version: current_version()}
 
-    with {:ok, app} <- App.new(project_slug, project_name, attrs),
+    with {:ok, app} <- App.new(project_slug, project_id, attrs),
          {:ok, app} <- Repo.init_store(app),
          {:ok, app} <- Repo.save(app),
-         {:ok, _page} <- add_page(app, "index") do
+         {:ok, _p} <- add_page(app, "index") do
       {:ok, app}
     else
       error -> error
@@ -58,7 +58,7 @@ defmodule Elixirius.Constructor do
   ## Examples
       iex> {:ok, app} = Constructor.get_app("sample-app")
       iex> app
-      %App{name: "SampleApp", slug: "sample-app", path: "projects/sample-app/.elixirius", ...}
+      %App{id: "SampleApp", slug: "sample-app", path: "projects/sample-app/.elixirius", ...}
 
 
   ## Errros
@@ -76,15 +76,15 @@ defmodule Elixirius.Constructor do
       iex> {:ok, app} = Constructor.get_app("sample-app")
       iex> {:ok, page} = Constructor.add_page(app, "index")
       iex> page
-      %Page{project: "sample-app", name: "index"}
+      %Page{project: "sample-app", id: "index"}
 
 
   ## Errros
       # Page is not unique
       iex> {:error, :already_exists} = Constructor.add_page(app, "existing_page")
   """
-  def add_page(%App{} = app, page_name) do
-    with {:ok, page} <- Page.new(app.slug, page_name),
+  def add_page(%App{} = app, page_id) do
+    with {:ok, page} <- Page.new(app.slug, page_id),
          {:ok, page} <- Repo.save(page) do
       {:ok, page}
     else
@@ -98,12 +98,13 @@ defmodule Elixirius.Constructor do
   ## Examples
       iex> {:ok, app} = Constructor.get_app("sample-app")
       iex> {:ok, page} = Constructor.get_page(app, "index")
-      iex> {:ok, page} = Constructor.add_element(page, "")
+      iex> {:ok, page} = Constructor.add_element(page, "Header")
       iex> page
-      %Page{project: "sample-app", name: "index", elements: %Element{type: "Header", name: "header_1"}}
+      %Page{project: "sample-app", id: "index", elements: %Element{type: "Header", id: "header_1"}}
   """
   def add_element(%Page{} = page, element_type, opts \\ %{}) do
-    with {:ok, element} <- Element.new(element_type, "header_1"),
+    with {:ok, element_id} <- Page.generate_element_id(page, element_type),
+         {:ok, element} <- Element.new(element_type, element_id, opts),
          {:ok, page} <- Page.add_element(page, element),
          {:ok, page} <- Repo.save(page) do
       {:ok, page}
@@ -113,18 +114,14 @@ defmodule Elixirius.Constructor do
   end
 
   # TODO
-  # def update_element(page, elem_name, opts \\ []) do
+  # def update_element(page, elem_id, opts \\ %{}) do
   # end
 
   # TODO
-  # def remove_element(page, elem_name, opts \\ []) do
+  # def remove_element(page, elem_id) do
   # end
 
   # TODO
-  # def get_element(page, page_name) do
-  # end
-
-  # TODO
-  # def generate_unique_element_name(page, element_type) do
+  # def get_element(page, page_id) do
   # end
 end

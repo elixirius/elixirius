@@ -51,7 +51,7 @@ defmodule Elixirius.Constructor.Repo do
     with app_path <- build_app_path(project_slug),
          {:ok, file_data} <- File.read(app_path),
          {:ok, json} <- Jason.decode(file_data, keys: :atoms) do
-      App.new(project_slug, json["name"], json)
+      App.new(project_slug, json["id"], json)
     else
       {:error, :enoent} -> {:error, :not_exists}
       error -> error
@@ -69,7 +69,7 @@ defmodule Elixirius.Constructor.Repo do
   end
 
   defp build_page_path(page) do
-    [@root_dir, page.project, @elixirius_dir, @pages_dir, "#{page.name}.json"]
+    [@root_dir, page.project, @elixirius_dir, @pages_dir, "#{page.id}.json"]
     |> Enum.join(@path_delim)
   end
 end
