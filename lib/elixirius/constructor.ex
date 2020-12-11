@@ -113,15 +113,31 @@ defmodule Elixirius.Constructor do
     end
   end
 
-  # TODO
-  # def update_element(page, elem_id, opts \\ %{}) do
-  # end
+  @doc """
+  Update an element on the page
+
+  ## Examples
+      iex> {:ok, page} = Constructor.update_element(page, "header_1", %{id: "top_header", parent: "...", position: 1})
+      iex> page
+      %Page{project: "sample-app", id: "index", elements: %Element{type: "Header", id: "top_header", parent: "...", position: 1}}
+  """
+  def update_element(page, elem_id, opts \\ %{}) do
+    with {:ok, elem} <- Page.get_element(page, elem_id),
+         {:ok, opts} <- Element.validate(elem, opts),
+         {:ok, page} <- Page.validate_element_id(page, opts[:id]),
+         {:ok, page} <- Page.update_element(page, elem, opts),
+         {:ok, page} <- Repo.save(page) do
+      {:ok, page}
+    else
+      error -> error
+    end
+  end
 
   # TODO
   # def remove_element(page, elem_id) do
   # end
 
-  # TODO
-  # def get_element(page, page_id) do
+  # TODO: build page elements as multi-level nested tree. Recursion...
+  # def page_tree(page) do
   # end
 end

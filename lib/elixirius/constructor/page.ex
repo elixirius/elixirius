@@ -2,6 +2,7 @@ defmodule Elixirius.Constructor.Page do
   @moduledoc false
 
   import Phoenix.Naming, only: [underscore: 1]
+  alias Elixirius.Constructor.Element
 
   @derive Jason.Encoder
   @enforce_keys [:project, :id]
@@ -42,14 +43,48 @@ defmodule Elixirius.Constructor.Page do
     |> success()
   end
 
-  defp any_element_by_id?(elements_list, element_id) do
-    Enum.any?(elements_list, &(&1.id == element_id))
+  def get_element(%__MODULE__{} = page, elem_id) do
+    page.elements
+    |> Enum.find(&(&1.id == elem_id))
+    |> case do
+      nil -> {:error, :not_exists}
+      elem -> {:ok, elem}
+    end
+  end
+
+  def update_element(%__MODULE__{} = page, %Element{} = old_element, opts \\ %{}) do
+    new_element = Map.merge(old_element, opts)
+
+    page
+    |> unassign_element(old_element)
+    |> assign_element(new_element)
+    |> reorder_elements()
+    |> success()
+  end
+
+  def validate_element_id(%__MODULE__{} = page, nil), do: {:ok, page}
+
+  def validate_element_id(%__MODULE__{} = page, elem_id) do
+    page.elements
+    |> any_element_by_id?(elem_id)
+    |> case do
+      true -> {:error, [{:error, :id, :uniquness, "must be unique"}]}
+      false -> {:ok, page}
+    end
+  end
+
+  def any_element_by_id?(elements_list, elem_id) do
+    Enum.any?(elements_list, &(&1.id == elem_id))
   end
 
   defp assign_element(page, element) do
     position = define_element_position(page.elements, element)
     new_elem = Map.put(element, :position, position)
     Map.put(page, :elements, [new_elem | page.elements])
+  end
+
+  defp unassign_element(page, element) do
+    Map.put(page, :elements, Enum.reject(page.elements, &(&1.id == element.id)))
   end
 
   defp define_element_position(elements_list, element) do

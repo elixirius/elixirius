@@ -193,4 +193,60 @@ defmodule Elixirius.ConstructorTest do
              ]
     end
   end
+
+  describe "update_element/3" do
+    test "update existing element on the page" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:ok, page} = Constructor.update_element(page, "box_1", %{id: "parent_box"})
+
+      {:ok, page} =
+        Constructor.update_element(page, "box_2", %{id: "child_box", parent: "parent_box"})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "parent_box", position: 0, parent: nil},
+               %Element{type: "Box", id: "child_box", position: 0, parent: "parent_box"}
+             ]
+    end
+
+    test "element does not exists" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:error, msg} = Constructor.update_element(page, "box_3", %{id: "box_1"})
+      assert msg == :not_exists
+    end
+
+    test "must has valid opts" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:error, msg} = Constructor.update_element(page, "box_1", %{id: nil, type: nil})
+
+      assert msg == [
+               {:error, :id, :presence, "must be present"},
+               {:error, :type, :presence, "must be present"}
+             ]
+    end
+
+    test "must has unique name" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:error, msg} = Constructor.update_element(page, "box_2", %{id: "box_1"})
+      assert msg == [{:error, :id, :uniquness, "must be unique"}]
+    end
+  end
 end
