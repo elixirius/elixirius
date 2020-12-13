@@ -125,6 +125,7 @@ defmodule Elixirius.Constructor do
     with {:ok, elem} <- Page.get_element(page, elem_id),
          {:ok, opts} <- Element.validate(elem, opts),
          {:ok, page} <- Page.validate_element_id(page, opts[:id]),
+         {:ok, page} <- Page.validate_element_parent(page, opts[:parent]),
          {:ok, page} <- Page.update_element(page, elem, opts),
          {:ok, page} <- Repo.save(page) do
       {:ok, page}

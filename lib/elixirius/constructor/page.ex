@@ -29,7 +29,7 @@ defmodule Elixirius.Constructor.Page do
     id_candidate = "#{prefix}_#{seq}"
 
     elements
-    |> any_element_by_id?(id_candidate)
+    |> any_element_by?(:id, id_candidate)
     |> case do
       true -> gen_seq_element_id(elements, prefix, seq + 1)
       false -> id_candidate
@@ -66,15 +66,26 @@ defmodule Elixirius.Constructor.Page do
 
   def validate_element_id(%__MODULE__{} = page, elem_id) do
     page.elements
-    |> any_element_by_id?(elem_id)
+    |> any_element_by?(:id, elem_id)
     |> case do
       true -> {:error, [{:error, :id, :uniquness, "must be unique"}]}
       false -> {:ok, page}
     end
   end
 
-  def any_element_by_id?(elements_list, elem_id) do
-    Enum.any?(elements_list, &(&1.id == elem_id))
+  def validate_element_parent(%__MODULE__{} = page, nil), do: {:ok, page}
+
+  def validate_element_parent(%__MODULE__{} = page, parent) do
+    page.elements
+    |> any_element_by?(:id, parent)
+    |> case do
+      true -> {:ok, page}
+      false -> {:error, [{:error, :parent, :exists, "must exists"}]}
+    end
+  end
+
+  defp any_element_by?(elements_list, key, value) do
+    Enum.any?(elements_list, &(Map.get(&1, key) == value))
   end
 
   defp assign_element(page, element) do

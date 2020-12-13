@@ -48,7 +48,7 @@ defmodule Elixirius.ConstructorTest do
       assert File.exists?("projects/#{project_slug}/.elixirius/pages/index.json")
     end
 
-    test "error if project already exists" do
+    test "error if project already exist" do
       project_slug = generate_unique_project_slug()
       {:ok, _app} = Constructor.init_app(project_slug, "SampleApp")
       {:error, msg} = Constructor.init_app(project_slug, "SampleApp")
@@ -213,7 +213,7 @@ defmodule Elixirius.ConstructorTest do
              ]
     end
 
-    test "element does not exists" do
+    test "element does not exist" do
       project_slug = generate_unique_project_slug()
       {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
@@ -247,6 +247,16 @@ defmodule Elixirius.ConstructorTest do
 
       {:error, msg} = Constructor.update_element(page, "box_2", %{id: "box_1"})
       assert msg == [{:error, :id, :uniquness, "must be unique"}]
+    end
+
+    test "must has existing parent" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:error, msg} = Constructor.update_element(page, "box_1", %{parent: "parent_box"})
+      assert msg == [{:error, :parent, :exists,  "must exists"}]
     end
   end
 end
