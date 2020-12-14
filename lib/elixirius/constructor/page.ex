@@ -58,8 +58,24 @@ defmodule Elixirius.Constructor.Page do
     page
     |> unassign_element(old_element)
     |> assign_element(new_element)
+    |> update_childred(old_element.id == new_element.id, old_element, new_element)
     |> reorder_elements()
     |> success()
+  end
+
+  defp update_childred(page, true, _old_el, _new_el), do: page
+
+  defp update_childred(page, false, old_el, new_el) do
+    updated_elements =
+      Enum.map(page.elements, fn el ->
+        if el.parent == old_el.id do
+          Map.put(el, :parent, new_el.id)
+        else
+          el
+        end
+      end)
+
+    Map.put(page, :elements, updated_elements)
   end
 
   def validate_element_id(%__MODULE__{} = page, nil), do: {:ok, page}
@@ -94,13 +110,48 @@ defmodule Elixirius.Constructor.Page do
     Map.put(page, :elements, [new_elem | page.elements])
   end
 
+  def remove_element(%__MODULE__{} = page, %Element{} = element) do
+    page
+    |> unassign_element(element)
+    |> remove_children(element)
+    |> reorder_elements()
+    |> success()
+  end
+
+  defp remove_children(page, element) do
+    related_sublings = find_sublings(page, element)
+    new_elements = Enum.reject(page.elements, &Enum.member?(related_sublings, &1))
+
+    Map.put(page, :elements, new_elements)
+  end
+
+  defp find_sublings(page, el) do
+    children = filter_elements_by_parent(page.elements, el)
+
+    find_sublings(page, el, children, children)
+  end
+
+  defp find_sublings(page, _el, [head | tail], acum) do
+    children = filter_elements_by_parent(page.elements, head)
+
+    find_sublings(page, head, tail ++ children, acum ++ children)
+  end
+
+  defp find_sublings(_page, _el, [], acum) do
+    acum
+  end
+
+  defp filter_elements_by_parent(elements_list, parent_elem) do
+    Enum.filter(elements_list, &(&1.parent == parent_elem.id))
+  end
+
   defp unassign_element(page, element) do
     Map.put(page, :elements, Enum.reject(page.elements, &(&1.id == element.id)))
   end
 
   defp define_element_position(elements_list, element) do
     scoped_elements = Enum.filter(elements_list, &(&1.parent == element.parent))
-    scoped_amount = Enum.count(scoped_elements)
+    scoped_amount = Enum.count(scoped_elements) + 1
 
     cond do
       element.position == nil -> scoped_amount
@@ -118,7 +169,7 @@ defmodule Elixirius.Constructor.Page do
         |> Enum.sort_by(& &1.position)
         |> Enum.with_index()
         |> Enum.map(fn {elem, idx} ->
-          Map.put(elem, :position, idx)
+          Map.put(elem, :position, idx + 1)
         end)
       end)
 

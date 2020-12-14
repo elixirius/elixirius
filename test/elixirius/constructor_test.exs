@@ -107,7 +107,7 @@ defmodule Elixirius.ConstructorTest do
       assert page == %Page{
                id: "index",
                project: project_slug,
-               elements: [%Element{type: "Header", id: "header_1", position: 0}]
+               elements: [%Element{type: "Header", id: "header_1", position: 1}]
              }
 
       # Creates json config file
@@ -124,7 +124,7 @@ defmodule Elixirius.ConstructorTest do
                    "data" => %{},
                    "view" => %{},
                    "parent" => nil,
-                   "position" => 0
+                   "position" => 1
                  }
                ]
              }
@@ -138,58 +138,58 @@ defmodule Elixirius.ConstructorTest do
       {:ok, page} = Constructor.add_element(page, "Box")
 
       assert page.elements == [
-               %Element{type: "Box", id: "box_1", position: 0},
-               %Element{type: "Box", id: "box_2", position: 1}
+               %Element{type: "Box", id: "box_1", position: 1},
+               %Element{type: "Box", id: "box_2", position: 2}
              ]
 
       {:ok, page} = Constructor.add_element(page, "Box", %{position: 5})
 
       assert page.elements == [
-               %Element{type: "Box", id: "box_1", position: 0},
-               %Element{type: "Box", id: "box_2", position: 1},
-               %Element{type: "Box", id: "box_3", position: 2}
+               %Element{type: "Box", id: "box_1", position: 1},
+               %Element{type: "Box", id: "box_2", position: 2},
+               %Element{type: "Box", id: "box_3", position: 3}
              ]
 
       {:ok, page} = Constructor.add_element(page, "Box", %{position: 1})
 
       assert page.elements == [
-               %Element{type: "Box", id: "box_1", position: 0},
                %Element{type: "Box", id: "box_4", position: 1},
-               %Element{type: "Box", id: "box_2", position: 2},
-               %Element{type: "Box", id: "box_3", position: 3}
+               %Element{type: "Box", id: "box_1", position: 2},
+               %Element{type: "Box", id: "box_2", position: 3},
+               %Element{type: "Box", id: "box_3", position: 4}
              ]
 
       {:ok, page} = Constructor.add_element(page, "Box", %{parent: "box_1"})
 
       assert page.elements == [
-               %Element{type: "Box", id: "box_1", position: 0},
                %Element{type: "Box", id: "box_4", position: 1},
-               %Element{type: "Box", id: "box_2", position: 2},
-               %Element{type: "Box", id: "box_3", position: 3},
-               %Element{type: "Box", id: "box_5", position: 0, parent: "box_1"}
+               %Element{type: "Box", id: "box_1", position: 2},
+               %Element{type: "Box", id: "box_2", position: 3},
+               %Element{type: "Box", id: "box_3", position: 4},
+               %Element{type: "Box", id: "box_5", position: 1, parent: "box_1"}
              ]
 
       {:ok, page} = Constructor.add_element(page, "Box", %{parent: "box_1"})
 
       assert page.elements == [
-               %Element{type: "Box", id: "box_1", position: 0},
                %Element{type: "Box", id: "box_4", position: 1},
-               %Element{type: "Box", id: "box_2", position: 2},
-               %Element{type: "Box", id: "box_3", position: 3},
-               %Element{type: "Box", id: "box_5", position: 0, parent: "box_1"},
-               %Element{type: "Box", id: "box_6", position: 1, parent: "box_1"}
+               %Element{type: "Box", id: "box_1", position: 2},
+               %Element{type: "Box", id: "box_2", position: 3},
+               %Element{type: "Box", id: "box_3", position: 4},
+               %Element{type: "Box", id: "box_5", position: 1, parent: "box_1"},
+               %Element{type: "Box", id: "box_6", position: 2, parent: "box_1"}
              ]
 
       {:ok, page} = Constructor.add_element(page, "Box", %{parent: "box_1", position: 1})
 
       assert page.elements == [
-               %Element{type: "Box", id: "box_1", position: 0},
                %Element{type: "Box", id: "box_4", position: 1},
-               %Element{type: "Box", id: "box_2", position: 2},
-               %Element{type: "Box", id: "box_3", position: 3},
-               %Element{type: "Box", id: "box_5", position: 0, parent: "box_1"},
+               %Element{type: "Box", id: "box_1", position: 2},
+               %Element{type: "Box", id: "box_2", position: 3},
+               %Element{type: "Box", id: "box_3", position: 4},
                %Element{type: "Box", id: "box_7", position: 1, parent: "box_1"},
-               %Element{type: "Box", id: "box_6", position: 2, parent: "box_1"}
+               %Element{type: "Box", id: "box_5", position: 2, parent: "box_1"},
+               %Element{type: "Box", id: "box_6", position: 3, parent: "box_1"}
              ]
     end
   end
@@ -208,8 +208,8 @@ defmodule Elixirius.ConstructorTest do
         Constructor.update_element(page, "box_2", %{id: "child_box", parent: "parent_box"})
 
       assert page.elements == [
-               %Element{type: "Box", id: "parent_box", position: 0, parent: nil},
-               %Element{type: "Box", id: "child_box", position: 0, parent: "parent_box"}
+               %Element{type: "Box", id: "parent_box", position: 1, parent: nil},
+               %Element{type: "Box", id: "child_box", position: 1, parent: "parent_box"}
              ]
     end
 
@@ -256,7 +256,67 @@ defmodule Elixirius.ConstructorTest do
       {:ok, page} = Constructor.add_element(page, "Box")
 
       {:error, msg} = Constructor.update_element(page, "box_1", %{parent: "parent_box"})
-      assert msg == [{:error, :parent, :exists,  "must exists"}]
+      assert msg == [{:error, :parent, :exists, "must exists"}]
+    end
+
+    test "update id must update related children parent" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box", parent: "box_1")
+      {:ok, page} = Constructor.add_element(page, "Box", parent: "box_1")
+      {:ok, page} = Constructor.add_element(page, "Box", parent: "box_2")
+
+      {:ok, page} = Constructor.update_element(page, "box_1", %{id: "box_0"})
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_0", position: 1, parent: nil},
+               %Element{type: "Box", id: "box_2", position: 1, parent: "box_0"},
+               %Element{type: "Box", id: "box_3", position: 2, parent: "box_0"},
+               %Element{type: "Box", id: "box_4", position: 1, parent: "box_2"}
+             ]
+    end
+  end
+
+  describe "remove_element/2" do
+    test "unassign page element" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:ok, page} = Constructor.remove_element(page, "box_1")
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_2", position: 1, parent: nil}
+             ]
+    end
+
+    test "unassign page element with children" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:ok, page} = Constructor.add_element(page, "Box")
+      {:ok, page} = Constructor.add_element(page, "Box", parent: "box_1")
+      {:ok, page} = Constructor.add_element(page, "Box", parent: "box_2")
+      {:ok, page} = Constructor.add_element(page, "Box")
+
+      {:ok, page} = Constructor.remove_element(page, "box_1")
+
+      assert page.elements == [
+               %Element{type: "Box", id: "box_4", position: 1, parent: nil}
+             ]
+    end
+
+    test "element must exists" do
+      project_slug = generate_unique_project_slug()
+      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      {:error, msg} = Constructor.remove_element(page, "not_exists")
+
+      assert msg == :not_exists
     end
   end
 end

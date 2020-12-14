@@ -120,6 +120,16 @@ defmodule Elixirius.Constructor do
       iex> {:ok, page} = Constructor.update_element(page, "header_1", %{id: "top_header", parent: "...", position: 1})
       iex> page
       %Page{project: "sample-app", id: "index", elements: %Element{type: "Header", id: "top_header", parent: "...", position: 1}}
+
+  ## Errros
+    # Element does not exist
+    iex> {:error, :not_exists} = Constructor.update_element(page, "header_2")
+    # Give id is null
+    iex> {:error, [{:error, :id, :presence, "must be present"}]} = Constructor.update_element(page, "header_2", %{id: nil})
+    # Give id is not unique
+    iex> {:error, [{:error, :id, :uniquness, "must be unique"}]} = Constructor.update_element(page, "header_2", %{id: "top_header"})
+    # Given parent is not exists
+    iex> {:error, [{:error, :parent, :exists,  "must exists"}] = Constructor.update_element(page, "header_2", %{parent: "none"})
   """
   def update_element(page, elem_id, opts \\ %{}) do
     with {:ok, elem} <- Page.get_element(page, elem_id),
@@ -134,11 +144,29 @@ defmodule Elixirius.Constructor do
     end
   end
 
-  # TODO
-  # def remove_element(page, elem_id) do
-  # end
+  @doc """
+  Remove an element on the page. Children also will be removed
+
+  ## Examples
+      iex> {:ok, page} = Constructor.remove_element(page, "header_1")
+      iex> page
+      %Page{project: "sample-app", id: "index", elements: []}
+
+  ## Errros
+    # Element does not exist
+    iex> {:error, :not_exists} = Constructor.remove_element(page, "header_2")
+  """
+  def remove_element(page, elem_id) do
+    with {:ok, elem} <- Page.get_element(page, elem_id),
+         {:ok, page} <- Page.remove_element(page, elem),
+         {:ok, page} <- Repo.save(page) do
+      {:ok, page}
+    else
+      error -> error
+    end
+  end
 
   # TODO: build page elements as multi-level nested tree. Recursion...
-  # def page_tree(page) do
+  # def build_page_tree_map(page) do
   # end
 end
