@@ -9,9 +9,9 @@ defmodule Elixirius.Constructor.Page do
 
   defstruct project: nil, id: nil, elements: []
 
-  def new(project_slug, page_id, attrs \\ %{}) do
+  def new(project_id, page_id, attrs \\ %{}) do
     %__MODULE__{
-      project: project_slug,
+      project: project_id,
       id: page_id
     }
     |> Map.merge(attrs)

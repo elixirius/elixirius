@@ -31,7 +31,8 @@ defmodule ElixiriusWeb.ProjectLive.FormComponent do
 
   defp save_project(socket, :new, project_params) do
     case Workshop.create_project(
-           Map.put_new(project_params, "user_id", socket.assigns.current_user.id)
+           Map.put_new(project_params, "user_id", socket.assigns.current_user.id),
+           seed: true
          ) do
       {:ok, _project} ->
         {:noreply,

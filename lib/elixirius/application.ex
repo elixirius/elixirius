@@ -14,9 +14,9 @@ defmodule Elixirius.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Elixirius.PubSub},
       # Start the Endpoint (http/https)
-      ElixiriusWeb.Endpoint
-      # Start a worker by calling: Elixirius.Worker.start_link(arg)
-      # {Elixirius.Worker, arg}
+      ElixiriusWeb.Endpoint,
+      # Task supervisor for Async module
+      {Task.Supervisor, name: Elixirius.TaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

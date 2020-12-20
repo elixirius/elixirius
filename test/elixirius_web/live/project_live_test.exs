@@ -3,9 +3,17 @@ defmodule ElixiriusWeb.ProjectLiveTest do
 
   import Phoenix.LiveViewTest
   import Elixirius.WorkshopFixtures
+  import Elixirius.Helpers.FileSystem
+
+  setup do
+    clear_test_projects()
+
+    :ok
+  end
 
   defp create_project(conn) do
-    project = project_fixture(%{user_id: conn.user.id})
+    project = project_fixture(%{user_id: conn.user.id, slug: generate_unique_project_id()})
+
     %{project: project}
   end
 
@@ -23,6 +31,8 @@ defmodule ElixiriusWeb.ProjectLiveTest do
     end
 
     test "saves new project", %{conn: conn} do
+      project_slug = generate_unique_project_id()
+
       {:ok, index_live, _html} = live(conn, Routes.project_index_path(conn, :index))
 
       assert index_live |> element("a", "New Project") |> render_click() =~ "New Project"
@@ -35,7 +45,7 @@ defmodule ElixiriusWeb.ProjectLiveTest do
 
       {:ok, _, html} =
         index_live
-        |> form("#project-form", project: %{name: "My Project"})
+        |> form("#project-form", project: %{name: "My Project", slug: project_slug})
         |> render_submit()
         |> follow_redirect(conn, Routes.project_index_path(conn, :index))
 

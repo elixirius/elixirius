@@ -39,10 +39,10 @@ defmodule Elixirius.Constructor do
       # When the app already exists constructor tries to avoid a rewrite
       iex> {:error, :already_exists} = Constructor.init_app("sample-app")
   """
-  def init_app(project_slug, project_id) do
+  def init_app(project_id, project_name) do
     attrs = %{constructor_version: current_version()}
 
-    with {:ok, app} <- App.new(project_slug, project_id, attrs),
+    with {:ok, app} <- App.new(project_id, project_name, attrs),
          {:ok, app} <- Repo.init_store(app),
          {:ok, app} <- Repo.save(app),
          {:ok, _p} <- add_page(app, "index") do
@@ -84,7 +84,7 @@ defmodule Elixirius.Constructor do
       iex> {:error, :already_exists} = Constructor.add_page(app, "existing_page")
   """
   def add_page(%App{} = app, page_id) do
-    with {:ok, page} <- Page.new(app.slug, page_id),
+    with {:ok, page} <- Page.new(app.id, page_id),
          {:ok, page} <- Repo.save(page) do
       {:ok, page}
     else

@@ -6,7 +6,7 @@ defmodule Elixirius.Workshop do
   alias Elixirius.Workshop
   ```
   """
-  alias Elixirius.Repo
+  alias Elixirius.{Async, Repo, Template}
   alias Elixirius.Workshop.{Project, ProjectQuery}
 
   @doc """
@@ -58,13 +58,21 @@ defmodule Elixirius.Workshop do
 
       iex> create_project(%{name: nil, slug: nil, user_id: nil})
       {:error, %Ecto.Changeset{}}
-
   """
-  def create_project(attrs \\ %{}) do
+  def create_project(attrs \\ %{}, opts \\ []) do
     %Project{}
     |> Project.create_changeset(attrs)
     |> Repo.insert()
+    |> maybe_seed_project(Keyword.get(opts, :seed, false))
   end
+
+  defp maybe_seed_project({:ok, project}, true) do
+    Async.execute(fn -> Template.seed_project(project.slug, project.name) end)
+
+    {:ok, project}
+  end
+
+  defp maybe_seed_project(anything, _seed), do: anything
 
   @doc """
   Updates a project.
