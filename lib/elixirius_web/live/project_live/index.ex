@@ -1,10 +1,21 @@
 defmodule ElixiriusWeb.ProjectLive.Index do
   @moduledoc false
 
-  use ElixiriusWeb, :live_view
+  use Surface.LiveView
+
+  import ElixiriusWeb.Router.Helpers
 
   alias Elixirius.Workshop
   alias Elixirius.Workshop.Project
+  alias Surface.Components.{LivePatch, LiveRedirect, Context}
+  alias ElixiriusWeb.Components.{Layouts.AppLayout, Modal, Project.Form, Project.List}
+
+  prop projects, :list
+  prop project, :map
+  prop page_title, :string
+  prop current_user, :map
+
+  # -- Events
 
   @impl true
   def mount(_params, %{"current_user" => user}, socket) do
@@ -17,9 +28,13 @@ defmodule ElixiriusWeb.ProjectLive.Index do
   end
 
   @impl true
+  @spec handle_params(any, any, Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
+
+  # --- Helpers
 
   defp apply_action(socket, :new, _params) do
     socket
@@ -35,5 +50,39 @@ defmodule ElixiriusWeb.ProjectLive.Index do
 
   defp list_projects(user_id) do
     Workshop.list_projects(user_id)
+  end
+
+  # --- Component
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <Context put={{ current_user: @current_user }}>
+      <AppLayout>
+        <h2 class="text-sm upercase font-bold text-indigo-700 mb-4">My Projects:</h2>
+
+        <Modal
+          id="new_project_modal"
+          :if={{ @live_action in [:new] }}
+          return_to={{ project_index_path(@socket, :index) }}
+        >
+          <Form
+            id="new_project_form"
+            title={{ @page_title }}
+            project={{ @project }}
+            action={{ @live_action }}
+            current_user={{ @current_user }}
+            return_to={{ project_index_path(@socket, :index) }}
+          />
+        </Modal>
+
+        <List projects={{ @projects }} />
+
+        <LivePatch to={{ project_index_path(@socket, :new) }}>
+          New Project
+        </LivePatch>
+      </AppLayout>
+    </Context>
+    """
   end
 end

@@ -1,9 +1,17 @@
 defmodule ElixiriusWeb.ProjectLive.Show do
   @moduledoc false
 
-  use ElixiriusWeb, :live_view
+  use Surface.LiveView
 
+  import ElixiriusWeb.Router.Helpers
+
+  alias Surface.Components.{LiveRedirect, Context}
   alias Elixirius.Workshop
+  alias ElixiriusWeb.Components.{Layouts.AppLayout, Modal, Project}
+
+  prop project, :map
+  prop current_user, :map
+  prop page_title, :string
 
   @impl true
   def mount(_params, %{"current_user" => user}, socket) do
@@ -28,6 +36,32 @@ defmodule ElixiriusWeb.ProjectLive.Show do
     {:noreply,
      socket
      |> put_flash(:info, "Project was deleted")
-     |> push_redirect(to: Routes.project_index_path(socket, :index))}
+     |> push_redirect(to: project_index_path(socket, :index))}
+  end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <Context put={{ current_user: @current_user, project: @project }}>
+      <AppLayout>
+        <Modal
+          :if={{ @live_action in [:setup] }}
+          id={{ "project-setup" }}
+          return_to={{ project_show_path(@socket, :show, @project.slug) }}
+        >
+          <Project.Form
+            id="project_form"
+            title={{ @page_title }}
+            project={{ @project }}
+            action={{ @live_action }}
+            current_user={{ @current_user }}
+            return_to={{ project_show_path(@socket, :show, @project.slug) }}
+          />
+        </Modal>
+
+        project builder might be here
+      </AppLayout>
+    </Context>
+    """
   end
 end

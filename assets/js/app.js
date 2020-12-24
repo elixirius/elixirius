@@ -1,7 +1,8 @@
 // We need to import the CSS so that webpack will load it.
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
-import "../css/app.scss"
+import "../css/app.css"
+import "../css/phoenix.css"
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
@@ -13,6 +14,7 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+import "phosphor-icons"
 import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
@@ -21,8 +23,8 @@ let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", info => NProgress.start())
-window.addEventListener("phx:page-loading-stop", info => NProgress.done())
+window.addEventListener("phx:page-loading-start", () => NProgress.start())
+window.addEventListener("phx:page-loading-stop", () => NProgress.done())
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

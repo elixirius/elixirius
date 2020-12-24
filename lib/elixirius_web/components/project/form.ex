@@ -1,9 +1,57 @@
-defmodule ElixiriusWeb.ProjectLive.FormComponent do
+defmodule ElixiriusWeb.Components.Project.Form do
   @moduledoc false
-
-  use ElixiriusWeb, :live_component
+  use Surface.LiveComponent
 
   alias Elixirius.Workshop
+  alias Surface.Components.{Form, Form.Field, Form.TextInput, Form.Label, Form.ErrorTag}
+
+  prop title, :string
+  prop changeset, :changeset
+  prop action, :atom
+  prop project, :any
+  prop current_user, :map
+  prop return_to, :any
+
+  def render(assigns) do
+    ~H"""
+    <div>
+      <h2>{{ @title }}</h2>
+
+      <Form
+        opts={{ id: "form--" <> @id }}
+        for={{ @changeset }}
+        action="#"
+        change="validate"
+        submit="save"
+      >
+        <Field name="name">
+          <Label />
+          <TextInput value={{ @changeset.changes["name"] }} />
+          <ErrorTag />
+        </Field>
+
+        <Field name="slug" :if={{ @action == :new }}>
+          <Label />
+          <TextInput value={{ @changeset.changes["slug"] }} />
+          <ErrorTag />
+
+          <p>
+            <small>Please, be  careful with the project's slug. It cannot be changed in the future</small>
+          </p>
+        </Field>
+
+        <button type="submit" phx_disable_with="Saving...">Save</button>
+      </Form>
+
+      <div :if={{ @action == :setup }}>
+        <p>Danger zone</p>
+        <button phx_click="delete" data-confirm="Are you sure?">
+          Delete
+        </button>
+      </div>
+    </div>
+    """
+  end
 
   @impl true
   def update(%{project: project} = assigns, socket) do
