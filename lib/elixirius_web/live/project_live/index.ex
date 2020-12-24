@@ -59,7 +59,17 @@ defmodule ElixiriusWeb.ProjectLive.Index do
     ~H"""
     <Context put={{ current_user: @current_user }}>
       <AppLayout>
-        <h2 class="text-sm upercase font-bold text-indigo-700 mb-4">My Projects:</h2>
+        <div class="flex justify-between items-center">
+          <h2 class="text-sm upercase font-bold text-indigo-700 mb-4">My Projects:</h2>
+
+          <LivePatch
+            to={{ project_index_path(@socket, :new) }}
+            class="text-sm flex items-center space-x-2 font-bold px-6 py-2 rounded bg-indigo-700 text-white transition duration-300 ease-in-out hover:bg-indigo-800"
+          >
+            <i class="ph-plus-circle ph-lg"></i>
+            <span>New Project</span>
+          </LivePatch>
+        </div>
 
         <Modal
           id="new_project_modal"
@@ -77,10 +87,6 @@ defmodule ElixiriusWeb.ProjectLive.Index do
         </Modal>
 
         <List projects={{ @projects }} />
-
-        <LivePatch to={{ project_index_path(@socket, :new) }}>
-          New Project
-        </LivePatch>
       </AppLayout>
     </Context>
     """
