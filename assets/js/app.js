@@ -16,15 +16,21 @@ import "../css/phoenix.css"
 import "phoenix_html"
 import "phosphor-icons"
 import {Socket} from "phoenix"
-import NProgress from "nprogress"
+import topbar from "topbar"
 import {LiveSocket} from "phoenix_live_view"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", () => NProgress.start())
-window.addEventListener("phx:page-loading-stop", () => NProgress.done())
+topbar.config({
+  className: 'opacity-50',
+  barColors: { '0': "#7209B7", '0.5': "#B5179E", '1': "#B5179E" },
+  barThickness: 1,
+  shadowColor: "rgba(0, 0, 0, .3)"
+})
+window.addEventListener("phx:page-loading-start", info => topbar.show())
+window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()
