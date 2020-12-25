@@ -20,7 +20,7 @@ defmodule ElixiriusWeb.Components.UserNav do
             </LiveRedirect>
 
             <LiveRedirect
-              to={{ user_settings_path(@socket, :edit) }}
+              to={{ profile_settings_path(@socket, :edit) }}
               class="flex items-center"
             >
               <i class="ph-user-circle-gear ph-xl text-gray-500"></i>

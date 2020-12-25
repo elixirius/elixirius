@@ -72,13 +72,13 @@ defmodule ElixiriusWeb.ProjectLive.Index do
         </div>
 
         <Modal
-          id="new_project_modal"
           :if={{ @live_action in [:new] }}
+          title={{ @page_title }}
+          id="new_project_modal"
           return_to={{ project_index_path(@socket, :index) }}
         >
           <Form
             id="new_project_form"
-            title={{ @page_title }}
             project={{ @project }}
             action={{ @live_action }}
             current_user={{ @current_user }}

@@ -64,10 +64,13 @@ defmodule ElixiriusWeb.Router do
   scope "/", ElixiriusWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/profile/settings", UserSettingsController, :edit
+    # get "/profile/settings", UserSettingsController, :edit
     put "/profile/settings/update_password", UserSettingsController, :update_password
     put "/profile/settings/update_email", UserSettingsController, :update_email
     get "/profile/settings/confirm_email/:token", UserSettingsController, :confirm_email
+
+    live "/profile/settings", ProfileLive.Settings, :edit,
+      session: {__MODULE__, :with_session, []}
 
     live "/projects", ProjectLive.Index, :index, session: {__MODULE__, :with_session, []}
     live "/projects/new", ProjectLive.Index, :new, session: {__MODULE__, :with_session, []}

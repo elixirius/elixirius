@@ -5,18 +5,16 @@ defmodule ElixiriusWeb.Components.Project.Form do
   alias Elixirius.Workshop
   alias Surface.Components.{Form, Form.Field, Form.TextInput, Form.Label, Form.ErrorTag}
 
-  prop title, :string
   prop changeset, :changeset
   prop action, :atom
   prop project, :any
   prop current_user, :map
   prop return_to, :any
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>
-      <h2>{{ @title }}</h2>
-
       <Form
         opts={{ id: "form--" <> @id }}
         for={{ @changeset }}

@@ -47,11 +47,11 @@ defmodule ElixiriusWeb.ProjectLive.Show do
         <Modal
           :if={{ @live_action in [:setup] }}
           id={{ "project-setup" }}
+          title={{ @page_title }}
           return_to={{ project_show_path(@socket, :show, @project.slug) }}
         >
           <Project.Form
             id="project_form"
-            title={{ @page_title }}
             project={{ @project }}
             action={{ @live_action }}
             current_user={{ @current_user }}
