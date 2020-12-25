@@ -1,12 +1,11 @@
 defmodule ElixiriusWeb.ProfileLive.Settings do
   use Surface.LiveView
 
-  import ElixiriusWeb.Router.Helpers
+  alias Surface.Components.Context
+  alias ElixiriusWeb.Components, as: UI
 
-  alias Elixirius.Workshop
-  alias Elixirius.Workshop.Project
-  alias Surface.Components.{LivePatch, LiveRedirect, Context}
-  alias ElixiriusWeb.Components.{Layouts.AppLayout, Modal, Project.Form, Project.List}
+  prop page_title, :string, default: "Profile Settings"
+  prop current_user, :map
 
   # -- Events
 
@@ -21,9 +20,17 @@ defmodule ElixiriusWeb.ProfileLive.Settings do
 
   # --- Component
 
+  @impl true
   def render(assigns) do
     ~H"""
-    <div>Profile settings</div>
+    <Context put={{ current_user: @current_user }}>
+      <UI.Layouts.AppLayout>
+        <UI.Profile.Form
+          id="profile_settings"
+          current_user={{ @current_user }}
+        />
+      </UI.Layouts.AppLayout>
+    </Context>
     """
   end
 end
