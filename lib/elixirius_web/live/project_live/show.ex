@@ -7,7 +7,7 @@ defmodule ElixiriusWeb.ProjectLive.Show do
 
   alias Surface.Components.{LiveRedirect, Context}
   alias Elixirius.Workshop
-  alias ElixiriusWeb.Components.{Layouts.AppLayout, Modal, Project}
+  alias ElixiriusWeb.Components, as: UI
 
   prop project, :map
   prop current_user, :map
@@ -43,24 +43,24 @@ defmodule ElixiriusWeb.ProjectLive.Show do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user, project: @project }}>
-      <AppLayout>
-        <Modal
+      <UI.Layouts.AppLayout>
+        <UI.Modal
           :if={{ @live_action in [:setup] }}
           id={{ "project-setup" }}
           title={{ @page_title }}
           return_to={{ project_show_path(@socket, :show, @project.slug) }}
         >
-          <Project.Form
+          <UI.Project.Form
             id="project_form"
             project={{ @project }}
             action={{ @live_action }}
             current_user={{ @current_user }}
             return_to={{ project_show_path(@socket, :show, @project.slug) }}
           />
-        </Modal>
+        </UI.Modal>
 
         project builder might be here
-      </AppLayout>
+      </UI.Layouts.AppLayout>
     </Context>
     """
   end

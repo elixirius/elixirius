@@ -7,8 +7,8 @@ defmodule ElixiriusWeb.ProjectLive.Index do
 
   alias Elixirius.Workshop
   alias Elixirius.Workshop.Project
-  alias Surface.Components.{LivePatch, LiveRedirect, Context}
-  alias ElixiriusWeb.Components.{Layouts.AppLayout, Modal, Project.Form, Project.List}
+  alias Surface.Components.{LivePatch, Context}
+  alias ElixiriusWeb.Components, as: UI
 
   prop projects, :list
   prop project, :map
@@ -58,7 +58,7 @@ defmodule ElixiriusWeb.ProjectLive.Index do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user }}>
-      <AppLayout>
+      <UI.Layouts.AppLayout>
         <div class="flex justify-between items-center">
           <h2 class="text-sm upercase font-bold text-indigo-700 mb-4">My Projects:</h2>
 
@@ -71,23 +71,23 @@ defmodule ElixiriusWeb.ProjectLive.Index do
           </LivePatch>
         </div>
 
-        <Modal
+        <UI.Modal
           :if={{ @live_action in [:new] }}
           title={{ @page_title }}
           id="new_project_modal"
           return_to={{ project_index_path(@socket, :index) }}
         >
-          <Form
+          <UI.Project.Form
             id="new_project_form"
             project={{ @project }}
             action={{ @live_action }}
             current_user={{ @current_user }}
             return_to={{ project_index_path(@socket, :index) }}
           />
-        </Modal>
+        </UI.Modal>
 
-        <List projects={{ @projects }} />
-      </AppLayout>
+        <UI.Project.List projects={{ @projects }} />
+      </UI.Layouts.AppLayout>
     </Context>
     """
   end

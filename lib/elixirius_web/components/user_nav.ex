@@ -1,7 +1,6 @@
 defmodule ElixiriusWeb.Components.UserNav do
   use Surface.Component
 
-  import Phoenix.HTML.{Link, Tag}
   import ElixiriusWeb.Router.Helpers
 
   alias Surface.Components.{LiveRedirect, Context, Link}
