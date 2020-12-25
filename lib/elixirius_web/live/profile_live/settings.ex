@@ -25,10 +25,7 @@ defmodule ElixiriusWeb.ProfileLive.Settings do
     ~H"""
     <Context put={{ current_user: @current_user }}>
       <UI.Layouts.AppLayout>
-        <UI.Profile.Form
-          id="profile_settings"
-          current_user={{ @current_user }}
-        />
+        <UI.Profile.Form id="profile_settings" />
       </UI.Layouts.AppLayout>
     </Context>
     """

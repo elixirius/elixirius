@@ -15,14 +15,13 @@ defmodule ElixiriusWeb.Components.Profile.Form do
 
   prop email_changeset, :changeset
   prop password_changeset, :changeset
-  prop current_user, :map
   prop return_to, :any
 
   # --- Events
 
-  def update(%{current_user: current_user} = assigns, socket) do
-    email_changeset = Accounts.change_user_email(current_user)
-    password_changeset = Accounts.change_user_password(current_user)
+  def update(%{__context__: %{current_user: user}} = assigns, socket) do
+    email_changeset = Accounts.change_user_email(user)
+    password_changeset = Accounts.change_user_password(user)
 
     {:ok,
      socket
@@ -46,19 +45,19 @@ defmodule ElixiriusWeb.Components.Profile.Form do
         submit="update_email"
       >
         <Field name="email">
-          <Label class="block text-sm font-semibold" />
+          <Label/>
           <TextInput value={{ @email_changeset.changes["email"] }} />
           <ErrorTag />
         </Field>
 
         <Field name="current_password">
-          <Label class="block text-sm font-semibold" />
+          <Label/>
           <PasswordInput />
           <ErrorTag />
         </Field>
 
         <button
-          class="rounded px-6 py-2 font-semibold bg-indigo-700 text-white text-sm transition duration-300 ease-in-out hover:bg-indigo-800"
+          class="button-primary"
           type="submit"
           phx-disable-with="Updating..."
         >
@@ -76,25 +75,25 @@ defmodule ElixiriusWeb.Components.Profile.Form do
         submit="update_password"
       >
         <Field name="password">
-          <Label class="block text-sm font-semibold" />
+          <Label/>
           <PasswordInput />
           <ErrorTag />
         </Field>
 
         <Field name="password_confirmation">
-          <Label class="block text-sm font-semibold" />
+          <Label/>
           <PasswordInput />
           <ErrorTag />
         </Field>
 
         <Field name="current_password">
-          <Label class="block text-sm font-semibold" />
+          <Label/>
           <PasswordInput />
           <ErrorTag />
         </Field>
 
         <button
-          class="rounded px-6 py-2 font-semibold bg-indigo-700 text-white text-sm transition duration-300 ease-in-out hover:bg-indigo-800"
+          class="button-primary"
           type="submit"
           phx-disable-with="Updating..."
         >

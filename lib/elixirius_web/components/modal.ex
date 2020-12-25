@@ -19,7 +19,7 @@ defmodule ElixiriusWeb.Components.Modal do
       phx-key="escape"
       phx-page-loading
     >
-      <div class="bg-white rounded max-w-5xl mx-auto shadow mt-16 p-8">
+      <div class="bg-white rounded-sm max-w-5xl mx-auto shadow mt-16 p-8">
         <div class="relative flex items-center border-b border-gray-100 mb-6 pb-3">
           <h3
             :if={{ @title }}

@@ -8,15 +8,14 @@ defmodule ElixiriusWeb.Components.Project.Form do
   prop changeset, :changeset
   prop action, :atom
   prop project, :any
-  prop current_user, :map
   prop return_to, :any
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="space-y-3">
       <Form
-        opts={{ id: "form--" <> @id }}
+        opts={{ id: "form--" <> @id, class: "space-y-3" }}
         for={{ @changeset }}
         action="#"
         change="validate"
@@ -25,7 +24,7 @@ defmodule ElixiriusWeb.Components.Project.Form do
         <Field name="name">
           <Label />
           <TextInput value={{ @changeset.changes["name"] }} />
-          <ErrorTag />
+          <ErrorTag class="text-red-700" />
         </Field>
 
         <Field name="slug" :if={{ @action == :new }}>
@@ -38,13 +37,25 @@ defmodule ElixiriusWeb.Components.Project.Form do
           </p>
         </Field>
 
-        <button type="submit" phx_disable_with="Saving...">Save</button>
+        <button
+          class="button-primary"
+          type="submit"
+          phx-disable-with="Saving..."
+        >
+          Save
+        </button>
       </Form>
 
       <div :if={{ @action == :setup }}>
-        <p>Danger zone</p>
-        <button phx_click="delete" data-confirm="Are you sure?">
-          Delete
+        <h3 class="text-indigo-700 font-bold pb-3 mb-3 border-b border-gray-100">
+          Danger zone
+        </h3>
+        <button
+          :on-click="delete"
+          data-confirm="Are you sure?"
+          class="button-danger"
+        >
+          Delete Project
         </button>
       </div>
     </div>
@@ -77,7 +88,7 @@ defmodule ElixiriusWeb.Components.Project.Form do
 
   defp save_project(socket, :new, project_params) do
     case Workshop.create_project(
-           Map.put_new(project_params, "user_id", socket.assigns.current_user.id)
+           Map.put_new(project_params, "user_id", socket.assigns.__context__.current_user.id)
          ) do
       {:ok, _project} ->
         {:noreply,

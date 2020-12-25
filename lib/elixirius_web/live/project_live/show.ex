@@ -54,7 +54,6 @@ defmodule ElixiriusWeb.ProjectLive.Show do
             id="project_form"
             project={{ @project }}
             action={{ @live_action }}
-            current_user={{ @current_user }}
             return_to={{ project_show_path(@socket, :show, @project.slug) }}
           />
         </UI.Modal>
