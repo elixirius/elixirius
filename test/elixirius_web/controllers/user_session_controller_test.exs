@@ -11,8 +11,8 @@ defmodule ElixiriusWeb.UserSessionControllerTest do
     test "renders log in page", %{conn: conn} do
       conn = get(conn, Routes.user_session_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
-      assert response =~ "Log in</a>"
+      assert response =~ "Log in</h1>"
+      assert response =~ "Log in</button>"
       assert response =~ "Register</a>"
     end
 
@@ -54,7 +54,7 @@ defmodule ElixiriusWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
+      assert response =~ "Log in</h1>"
       assert response =~ "Invalid email or password"
     end
   end
