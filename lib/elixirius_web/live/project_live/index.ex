@@ -59,12 +59,32 @@ defmodule ElixiriusWeb.ProjectLive.Index do
     ~H"""
     <Context put={{ current_user: @current_user }}>
       <UI.Layouts.AppLayout flash={{ @flash }}>
-        <div class="flex justify-between items-center">
+        <div
+          :if={{ Enum.count(@projects) > 0 }}
+          class="flex justify-between items-center">
           <h2 class="text-sm upercase font-bold text-indigo-700 mb-4">My Projects:</h2>
 
           <LivePatch
             to={{ project_index_path(@socket, :new) }}
-            class="text-sm flex items-center space-x-2 font-bold px-6 py-2 rounded bg-indigo-700 text-white transition duration-300 ease-in-out hover:bg-indigo-800"
+            class="button button-primary"
+          >
+            <i class="ph-plus-circle ph-lg"></i>
+            <span>New Project</span>
+          </LivePatch>
+        </div>
+
+        <div
+          :if={{ Enum.empty?(@projects) }}
+          class="flex justify-center text-center max-w-4xl mx-auto flex-col space-y-6"
+        >
+          <p class="text-xl">
+            You have no projects. <br />
+            Create a new one to see how awesome <strong>Elixirium</strong> is!
+          </p>
+
+          <LivePatch
+            to={{ project_index_path(@socket, :new) }}
+            class="button button-primary"
           >
             <i class="ph-plus-circle ph-lg"></i>
             <span>New Project</span>
@@ -85,7 +105,9 @@ defmodule ElixiriusWeb.ProjectLive.Index do
           />
         </UI.Modal>
 
-        <UI.Project.List projects={{ @projects }} />
+        <UI.Project.List
+          :if={{ Enum.count(@projects) > 0 }}
+          projects={{ @projects }} />
       </UI.Layouts.AppLayout>
     </Context>
     """

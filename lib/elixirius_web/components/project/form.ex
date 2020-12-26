@@ -108,6 +108,8 @@ defmodule ElixiriusWeb.Components.Project.Form do
     save_project(socket, socket.assigns.action, project_params)
   end
 
+  # --- Helpers
+
   defp save_project(socket, :new, project_params) do
     case Workshop.create_project(
            Map.put_new(project_params, "user_id", socket.assigns.__context__.current_user.id)
