@@ -4,21 +4,22 @@ defmodule ElixiriusWeb.Components.ProjectNav do
   import ElixiriusWeb.Router.Helpers
 
   alias Surface.Components.{LiveRedirect, Context}
+  alias ElixiriusWeb.Components, as: UI
 
   def render(assigns) do
     ~H"""
     <Context get={{ project: project }}>
-      <nav class="flex items-center space-x-4">
+      <nav class="flex items-center space-x-4 text-gray-500">
         <LiveRedirect class="flex items-center" to={{ project_show_path(@socket, :setup, project.slug) }}>
-          <i class="ph-wrench ph-xl text-gray-500"></i>
+          <UI.Icon name="wrench" />
         </LiveRedirect>
 
         <a href="#" class="flex items-center">
-          <i class="ph-play ph-xl text-gray-500"></i>
+          <UI.Icon name="play" />
         </a>
 
         <a href="#" class="flex items-center">
-          <i class="ph-eye ph-xl text-gray-500"></i>
+          <UI.Icon name="eye" />
         </a>
       </nav>
     </Context>

@@ -68,7 +68,8 @@ defmodule ElixiriusWeb.ProjectLive.Index do
             to={{ project_index_path(@socket, :new) }}
             class="button button-primary"
           >
-            <i class="ph-plus-circle ph-lg"></i>
+            <UI.Icon name="plus-circle" />
+
             <span>New Project</span>
           </LivePatch>
         </div>
@@ -86,7 +87,7 @@ defmodule ElixiriusWeb.ProjectLive.Index do
             to={{ project_index_path(@socket, :new) }}
             class="button button-primary"
           >
-            <i class="ph-plus-circle ph-lg"></i>
+            <UI.Icon name="plus-circle" />
             <span>New Project</span>
           </LivePatch>
         </div>

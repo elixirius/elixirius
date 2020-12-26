@@ -1,0 +1,4 @@
+.icon svg,
+.icon svg * {
+  stroke: currentColor !important;
+}

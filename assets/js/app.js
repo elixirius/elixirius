@@ -14,7 +14,6 @@ import "../css/phoenix.css"
 //     import socket from "./socket"
 //
 import "phoenix_html"
-import "phosphor-icons"
 import {Socket} from "phoenix"
 import topbar from "topbar"
 import {LiveSocket} from "phoenix_live_view"

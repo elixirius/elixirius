@@ -21,6 +21,8 @@ defmodule ElixiriusWeb do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
+      use PhoenixInlineSvg.Helpers
+
       import Surface
 
       # Include shared imports and aliases for views
@@ -69,7 +71,6 @@ defmodule ElixiriusWeb do
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.LiveView.Helpers
-      import ElixiriusWeb.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View

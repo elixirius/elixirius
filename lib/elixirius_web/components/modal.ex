@@ -2,6 +2,7 @@ defmodule ElixiriusWeb.Components.Modal do
   use Surface.LiveComponent
 
   alias Surface.Components.LivePatch
+  alias ElixiriusWeb.Components, as: UI
 
   slot default, required: true
 
@@ -29,7 +30,7 @@ defmodule ElixiriusWeb.Components.Modal do
           </h3>
 
           <LivePatch to={{ @return_to }} class="absolute right-0 top-0">
-            <i class="ph-x-circle ph-xl text-gray-500 hover:text-indigo-700 transition duration-300 ease-in-out"></i>
+            <UI.Icon name="x-circle" class="text-gray-500 hover:text-indigo-700 transition duration-300 ease-in-out" />
           </LivePatch>
         </div>
 

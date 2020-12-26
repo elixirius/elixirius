@@ -4,25 +4,26 @@ defmodule ElixiriusWeb.Components.UserNav do
   import ElixiriusWeb.Router.Helpers
 
   alias Surface.Components.{LiveRedirect, Context, Link}
+  alias ElixiriusWeb.Components, as: UI
 
   def render(assigns) do
     ~H"""
     <Context get={{ current_user: current_user }}>
       <nav>
         <div :if={{ current_user }} class="flex items-center space-x-6">
-          <div class="flex items-center space-x-4 text-gray-500 transition hover:text-grape-500">
+          <div class="flex items-center space-x-4 text-gray-500">
             <LiveRedirect
               to={{ project_index_path(@socket, :index) }}
               class="flex items-center"
             >
-              <i class="ph-browsers ph-xl text-gray-500"></i>
+              <UI.Icon name="browsers" />
             </LiveRedirect>
 
             <LiveRedirect
               to={{ profile_settings_path(@socket, :edit) }}
               class="flex items-center"
             >
-              <i class="ph-user-circle-gear ph-xl text-gray-500"></i>
+              <UI.Icon name="user-circle-gear" />
             </LiveRedirect>
 
             <Link
@@ -30,7 +31,9 @@ defmodule ElixiriusWeb.Components.UserNav do
               opts={{ method: :delete }}
               class="flex items-center"
             >
-              <i class="ph-sign-out ph-xl text-gray-500"></i>
+              <span class="icon inline-flex w-6 h-6">
+                {{ PhoenixInlineSvg.Helpers.svg_image(@socket.endpoint, "sign-out", "phosphor/regular", class: "h-auto") }}
+              </span>
             </Link>
           </div>
         </div>
