@@ -1,9 +1,11 @@
 defmodule ElixiriusWeb.Components.Layouts.AppLayout do
-  use Surface.LiveComponent
+  use Surface.Component
 
   alias ElixiriusWeb.Components, as: UI
 
   slot default
+
+  prop flash, :map
 
   # --- Component
 

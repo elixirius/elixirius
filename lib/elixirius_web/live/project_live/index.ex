@@ -58,7 +58,7 @@ defmodule ElixiriusWeb.ProjectLive.Index do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user }}>
-      <UI.Layouts.AppLayout>
+      <UI.Layouts.AppLayout flash={{ @flash }}>
         <div class="flex justify-between items-center">
           <h2 class="text-sm upercase font-bold text-indigo-700 mb-4">My Projects:</h2>
 

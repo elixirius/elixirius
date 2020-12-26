@@ -24,7 +24,7 @@ defmodule ElixiriusWeb.ProfileLive.Settings do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user }}>
-      <UI.Layouts.AppLayout>
+      <UI.Layouts.AppLayout flash={{ @flash }}>
         <UI.Profile.Form id="profile_settings" />
       </UI.Layouts.AppLayout>
     </Context>

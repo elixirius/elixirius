@@ -2,6 +2,8 @@ defmodule ElixiriusWeb.Components.Project.Form do
   @moduledoc false
   use Surface.LiveComponent
 
+  import ElixiriusWeb.Router.Helpers
+
   alias Elixirius.Workshop
   alias Surface.Components.{Form, Form.Field, Form.TextInput, Form.Label, Form.ErrorTag}
 
@@ -9,6 +11,8 @@ defmodule ElixiriusWeb.Components.Project.Form do
   prop action, :atom
   prop project, :any
   prop return_to, :any
+
+  # --- Component
 
   @impl true
   def render(assigns) do
@@ -52,6 +56,7 @@ defmodule ElixiriusWeb.Components.Project.Form do
         </h3>
         <button
           :on-click="delete"
+          value={{ @project.slug }}
           data-confirm="Are you sure?"
           class="button-danger"
         >
@@ -61,6 +66,8 @@ defmodule ElixiriusWeb.Components.Project.Form do
     </div>
     """
   end
+
+  # --- Events
 
   @impl true
   def update(%{project: project} = assigns, socket) do
@@ -80,6 +87,21 @@ defmodule ElixiriusWeb.Components.Project.Form do
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def handle_event("delete", %{"value" => project_slug}, socket) do
+    project = Workshop.get_project!(socket.assigns.__context__.current_user.id, project_slug)
+
+    case Workshop.delete_project(project) do
+      {:ok, _project} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Project deleted successfully")
+         |> push_redirect(to: project_index_path(socket, :index))}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
   end
 
   def handle_event("save", %{"project" => project_params}, socket) do
