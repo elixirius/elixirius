@@ -10,6 +10,7 @@
 [type="tel"],
 [type="time"],
 [type="week"],
+[type="checkbox"],
 [multiple],
 textarea,
 select {

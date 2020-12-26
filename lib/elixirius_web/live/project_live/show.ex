@@ -5,7 +5,7 @@ defmodule ElixiriusWeb.ProjectLive.Show do
 
   import ElixiriusWeb.Router.Helpers
 
-  alias Surface.Components.{LiveRedirect, Context}
+  alias Surface.Components.Context
   alias Elixirius.Workshop
   alias ElixiriusWeb.Components, as: UI
 

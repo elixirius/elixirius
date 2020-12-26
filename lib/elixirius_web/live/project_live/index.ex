@@ -81,7 +81,6 @@ defmodule ElixiriusWeb.ProjectLive.Index do
             id="new_project_form"
             project={{ @project }}
             action={{ @live_action }}
-            current_user={{ @current_user }}
             return_to={{ project_index_path(@socket, :index) }}
           />
         </UI.Modal>
