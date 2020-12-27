@@ -1,4 +1,6 @@
 defmodule Elixirius.Naming do
+  @moduledoc false
+
   def undersorize(str) when is_binary(str) do
     str
     |> String.replace(" ", "_")

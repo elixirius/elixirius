@@ -5,6 +5,8 @@ defmodule Elixirius.Application do
 
   use Application
 
+  @registry :constructor_registry
+
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
@@ -16,7 +18,9 @@ defmodule Elixirius.Application do
       # Start the Endpoint (http/https)
       ElixiriusWeb.Endpoint,
       # Task supervisor for Async module
-      {Task.Supervisor, name: Elixirius.TaskSupervisor}
+      {Task.Supervisor, name: Elixirius.TaskSupervisor},
+      {Elixirius.Constructor.Supervisor, []},
+      {Registry, [keys: :unique, name: @registry]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

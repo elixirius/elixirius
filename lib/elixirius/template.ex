@@ -7,6 +7,8 @@ defmodule Elixirius.Template do
 
   # TODO: Create template instance with config
   @default_template "phoenix_live_no_db_v1"
+  @module_name "SampleApp"
+  @underscore_name "sample_app"
 
   def seed_project(project_id, project_name) do
     module_name = Naming.modulize(project_name)
@@ -14,8 +16,8 @@ defmodule Elixirius.Template do
 
     with true <- copy_template(project_id),
          true <- rename_core_dirs_and_files(project_id, underscore_name),
-         true <- find_and_replace(project_id, "SampleApp", module_name),
-         true <- find_and_replace(project_id, "sample_app", underscore_name),
+         true <- find_and_replace(project_id, @module_name, module_name),
+         true <- find_and_replace(project_id, @underscore_name, underscore_name),
          {:ok, app} <- Constructor.init_app(project_id, project_name),
          {:ok, _page} <- Constructor.add_page(app, "index") do
       true
@@ -56,7 +58,7 @@ defmodule Elixirius.Template do
     true
   end
 
-  def find_and_replace(project_id, left, right) do
+  defp find_and_replace(project_id, left, right) do
     :os.cmd(
       String.to_charlist(
         "grep -rl #{left} projects/#{project_id} | xargs sed -i '' s/#{left}/#{right}/g"

@@ -59,7 +59,8 @@ defmodule Elixirius.MixProject do
       {:phx_gen_auth, "~> 0.5", only: [:dev], runtime: false},
       {:secure_random, "~> 0.5.1"},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
-      {:vex, "~> 0.8.0"}
+      {:vex, "~> 0.8.0"},
+      {:porcelain, "~> 2.0"}
     ]
   end
 

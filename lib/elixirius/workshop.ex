@@ -59,11 +59,16 @@ defmodule Elixirius.Workshop do
       iex> create_project(%{name: nil, slug: nil, user_id: nil})
       {:error, %Ecto.Changeset{}}
   """
-  def create_project(attrs \\ %{}, opts \\ []) do
+  def create_project(attrs \\ %{}) do
     %Project{}
     |> Project.create_changeset(attrs)
     |> Repo.insert()
-    |> maybe_seed_project(Keyword.get(opts, :seed, false))
+    |> maybe_seed_project(run_seed?())
+  end
+
+  # TODO: Maybe we need better solution than ENV flag
+  defp run_seed? do
+    System.get_env("MIX_ENV") == "dev" || System.get_env("MIX_ENV") == "prod"
   end
 
   defp maybe_seed_project({:ok, project}, true) do
