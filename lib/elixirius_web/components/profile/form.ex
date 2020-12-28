@@ -5,6 +5,7 @@ defmodule ElixiriusWeb.Components.Profile.Form do
   import ElixiriusWeb.Router.Helpers
 
   alias Elixirius.Accounts
+  alias ElixiriusWeb.UserAuth
 
   alias Surface.Components.{
     Form,
@@ -56,10 +57,9 @@ defmodule ElixiriusWeb.Components.Profile.Form do
       <h3 class="text-indigo-700 font-bold pb-3 border-b border-gray-100">Change Password:</h3>
 
       <Form
-        opts={{ id: "form-password--" <> @id, class: "space-y-3" }}
+        opts={{ id: "form-password--" <> @id, class: "space-y-3", method: "PUT" }}
         for={{ @password_changeset }}
-        action="#"
-        submit="update_password"
+        action={{ user_settings_path(@socket, :update_password) }}
       >
         <Field name="password">
           <Label/>

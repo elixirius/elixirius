@@ -28,7 +28,7 @@ defmodule ElixiriusWeb.UserAuth do
   """
   def log_in_user(conn, user, params \\ %{}) do
     token = Accounts.generate_user_session_token(user)
-    user_return_to = get_session(conn, :user_return_to)
+    user_return_to = Routes.profile_settings_path(conn, :edit)
 
     conn
     |> renew_session()

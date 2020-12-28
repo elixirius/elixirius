@@ -64,6 +64,7 @@ defmodule ElixiriusWeb.Router do
   scope "/", ElixiriusWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    post "/profile/settings/update_password", UserSettingsController, :update_password
     get "/profile/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
     live "/profile/settings", ProfileLive.Settings, :edit,

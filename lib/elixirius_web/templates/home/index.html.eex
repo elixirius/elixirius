@@ -8,7 +8,7 @@
         <%= link to: Routes.project_index_path(@conn, :index) do %>
           Projects
         <% end  %>
-        <%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %>
+        <%= link "Settings", to: Routes.profile_settings_path(@conn, :edit) %>
         <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %>
       <% else %>
         <%= link to: Routes.user_registration_path(@conn, :new), class: "flex items-center space-x-2" do %>
