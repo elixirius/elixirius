@@ -61,7 +61,8 @@ defmodule Elixirius.MixProject do
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:vex, "~> 0.8.0"},
       {:surface, "~> 0.1.1"},
-      {:phoenix_inline_svg, "~> 1.4"}
+      {:phoenix_inline_svg, "~> 1.4"},
+      {:porcelain, "~> 2.0"}
     ]
   end
 

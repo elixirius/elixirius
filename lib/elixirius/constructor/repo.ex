@@ -8,7 +8,7 @@ defmodule Elixirius.Constructor.Repo do
   alias Elixirius.Constructor.{App, Page}
 
   def init_store(%App{} = app) do
-    workdir = build_workdir_path(app.slug)
+    workdir = build_workdir_path(app.id)
 
     (!File.exists?(workdir) && File.mkdir_p(workdir))
     |> case do
@@ -19,7 +19,7 @@ defmodule Elixirius.Constructor.Repo do
   end
 
   def save(%App{} = app) do
-    [build_workdir_path(app.slug), @app_filename]
+    [build_workdir_path(app.id), @app_filename]
     |> Enum.join(@path_delim)
     |> File.write(Jason.encode!(app, pretty: true), [:binary])
     |> case do

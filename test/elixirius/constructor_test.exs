@@ -23,35 +23,35 @@ defmodule Elixirius.ConstructorTest do
 
   describe "init_app/2" do
     test "initiate new config skeleton" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
 
       assert app == %App{
-               id: "SampleApp",
-               slug: project_slug,
+               id: project_id,
+               name: "SampleApp",
                constructor_version: Constructor.current_version(),
                deps: %{components: []}
              }
 
       # Creates json config file
-      {:ok, file} = File.read("projects/#{project_slug}/.elixirius/app.json")
+      {:ok, file} = File.read("projects/#{project_id}/.elixirius/app.json")
       {:ok, json} = Jason.decode(file)
 
       assert json == %{
                "deps" => %{"components" => []},
                "constructor_version" => Constructor.current_version(),
-               "id" => "SampleApp",
-               "slug" => project_slug
+               "name" => "SampleApp",
+               "id" => project_id
              }
 
       # Creates index page json file
-      assert File.exists?("projects/#{project_slug}/.elixirius/pages/index.json")
+      assert File.exists?("projects/#{project_id}/.elixirius/pages/index.json")
     end
 
     test "error if project already exist" do
-      project_slug = generate_unique_project_slug()
-      {:ok, _app} = Constructor.init_app(project_slug, "SampleApp")
-      {:error, msg} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, _app} = Constructor.init_app(project_id, "SampleApp")
+      {:error, msg} = Constructor.init_app(project_id, "SampleApp")
 
       assert msg == :already_exists
     end
@@ -59,15 +59,15 @@ defmodule Elixirius.ConstructorTest do
 
   describe "get_app/1" do
     test "read app config from the file system and returns app struct" do
-      project_slug = generate_unique_project_slug()
-      {:ok, write_app} = Constructor.init_app(project_slug, "SampleApp")
-      {:ok, read_app} = Constructor.get_app(project_slug)
+      project_id = generate_unique_project_id()
+      {:ok, write_app} = Constructor.init_app(project_id, "SampleApp")
+      {:ok, read_app} = Constructor.get_app(project_id)
 
       assert write_app == read_app
     end
 
     test "returns error for non existing project" do
-      {:error, msg} = Constructor.get_app(generate_unique_project_slug())
+      {:error, msg} = Constructor.get_app(generate_unique_project_id())
 
       assert msg == :not_exists
     end
@@ -75,23 +75,23 @@ defmodule Elixirius.ConstructorTest do
 
   describe "add_page/3" do
     test "create page config" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
 
       assert page == %Page{
                id: "index",
-               project: project_slug,
+               project: project_id,
                elements: []
              }
 
       # Creates json config file
-      {:ok, file} = File.read("projects/#{project_slug}/.elixirius/pages/index.json")
+      {:ok, file} = File.read("projects/#{project_id}/.elixirius/pages/index.json")
       {:ok, json} = Jason.decode(file)
 
       assert json == %{
                "id" => "index",
-               "project" => project_slug,
+               "project" => project_id,
                "elements" => []
              }
     end
@@ -99,24 +99,24 @@ defmodule Elixirius.ConstructorTest do
 
   describe "add_element/3" do
     test "add element into page config" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Header")
 
       assert page == %Page{
                id: "index",
-               project: project_slug,
+               project: project_id,
                elements: [%Element{type: "Header", id: "header_1", position: 1}]
              }
 
       # Creates json config file
-      {:ok, file} = File.read("projects/#{project_slug}/.elixirius/pages/index.json")
+      {:ok, file} = File.read("projects/#{project_id}/.elixirius/pages/index.json")
       {:ok, json} = Jason.decode(file)
 
       assert json == %{
                "id" => "index",
-               "project" => project_slug,
+               "project" => project_id,
                "elements" => [
                  %{
                    "type" => "Header",
@@ -131,8 +131,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "add element into position and parent scope" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box")
@@ -196,8 +196,8 @@ defmodule Elixirius.ConstructorTest do
 
   describe "update_element/3" do
     test "update existing element on the page" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box")
@@ -214,8 +214,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "element does not exist" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box")
@@ -225,8 +225,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "must has valid opts" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
 
@@ -239,8 +239,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "must has unique name" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box")
@@ -250,8 +250,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "must has existing parent" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
 
@@ -260,8 +260,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "update id must update related children parent" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box", parent: "box_1")
@@ -281,8 +281,8 @@ defmodule Elixirius.ConstructorTest do
 
   describe "remove_element/2" do
     test "unassign page element" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box")
@@ -295,8 +295,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "unassign page element with children" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:ok, page} = Constructor.add_element(page, "Box")
       {:ok, page} = Constructor.add_element(page, "Box", parent: "box_1")
@@ -311,8 +311,8 @@ defmodule Elixirius.ConstructorTest do
     end
 
     test "element must exists" do
-      project_slug = generate_unique_project_slug()
-      {:ok, app} = Constructor.init_app(project_slug, "SampleApp")
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
       {:ok, page} = Constructor.add_page(app, "index")
       {:error, msg} = Constructor.remove_element(page, "not_exists")
 

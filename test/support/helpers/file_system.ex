@@ -1,5 +1,5 @@
 defmodule Elixirius.Helpers.FileSystem do
-  def generate_unique_project_slug, do: "test#{System.unique_integer()}"
+  def generate_unique_project_id, do: "test#{System.unique_integer()}"
 
   @test "test"
   def clear_test_projects do
