@@ -25,7 +25,8 @@ config :elixirius, ElixiriusWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
-      "--watch-stdin",
+      "--watch",
+      "--watch-options-stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
@@ -60,7 +61,7 @@ config :elixirius, ElixiriusWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/elixirius_web/(live|views)/.*(ex)$",
+      ~r"lib/elixirius_web/(live|views|components)/.*(ex)$",
       ~r"lib/elixirius_web/templates/.*(eex)$"
     ]
   ]

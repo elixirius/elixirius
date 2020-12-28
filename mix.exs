@@ -46,11 +46,11 @@ defmodule Elixirius.MixProject do
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_view, "~> 0.14.6"},
-      {:floki, ">= 0.27.0", only: :test},
+      {:phoenix_live_view, "~> 0.15.0"},
+      {:floki, ">= 0.27.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.3 or ~> 0.2.9"},
+      {:phoenix_live_dashboard, "~> 0.4"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
@@ -60,6 +60,8 @@ defmodule Elixirius.MixProject do
       {:secure_random, "~> 0.5.1"},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:vex, "~> 0.8.0"},
+      {:surface, "~> 0.1.1"},
+      {:phoenix_inline_svg, "~> 1.4"},
       {:porcelain, "~> 2.0"}
     ]
   end

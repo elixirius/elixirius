@@ -1,15 +1,23 @@
-<h1>Forgot your password?</h1>
+<div class="container grid place-items-center h-full">
+  <div class="flex flex-col justify-center items-center space-y-6">
+    <span class="icon block text-transparent">
+      <%= PhoenixInlineSvg.Helpers.svg_image(@conn, "logo-full", "branding", class: "h-16 w-full") %>
+    </span>
 
-<%= form_for :user, Routes.user_reset_password_path(@conn, :create), fn f -> %>
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+    <h1 class="font-bold text-lg text-indigo-700">Forgot your password?</h1>
 
-  <div>
-    <%= submit "Send instructions to reset password" %>
+    <%= form_for :user, Routes.user_reset_password_path(@conn, :create), [class: "space-y-3"], fn f -> %>
+      <div>
+        <%= label f, :email %>
+        <%= email_input f, :email, required: true, class: "w-full" %>
+      </div>
+
+      <%= submit "Send instructions to reset password", class: "button-primary" %>
+    <% end %>
+
+    <nav class="flex flex-col space-y-2 text-indigo-700 text-center">
+      <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+    </nav>
   </div>
-<% end %>
-
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
+</div>

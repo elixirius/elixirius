@@ -40,12 +40,12 @@ defmodule ElixiriusWeb.ProjectLiveTest do
       assert_patch(index_live, Routes.project_index_path(conn, :new))
 
       assert index_live
-             |> form("#project-form", project: invalid_project_attrs())
+             |> form("#form--new_project_form", project: invalid_project_attrs())
              |> render_change() =~ "can&apos;t be blank"
 
       {:ok, _, html} =
         index_live
-        |> form("#project-form", project: %{name: "My Project", slug: project_slug})
+        |> form("#form--new_project_form", project: %{name: "My Project", slug: project_slug})
         |> render_submit()
         |> follow_redirect(conn, Routes.project_index_path(conn, :index))
 
@@ -66,12 +66,14 @@ defmodule ElixiriusWeb.ProjectLiveTest do
     test "setup project", %{conn: conn, project: project} do
       {:ok, show_live, _html} = live(conn, Routes.project_show_path(conn, :setup, project.slug))
 
-      assert show_live |> form("#project-form", project: %{name: nil}) |> render_change() =~
+      assert show_live
+             |> form("#form--project_form", project: %{name: nil})
+             |> render_change() =~
                "can&apos;t be blank"
 
       {:ok, _, html} =
         show_live
-        |> form("#project-form", project: %{name: "New Name"})
+        |> form("#form--project_form", project: %{name: "New Name"})
         |> render_submit()
         |> follow_redirect(conn, Routes.project_show_path(conn, :show, project.slug))
 

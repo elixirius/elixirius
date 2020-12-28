@@ -1,0 +1,35 @@
+[type="text"],
+[type="email"],
+[type="url"],
+[type="password"],
+[type="number"],
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="search"],
+[type="tel"],
+[type="time"],
+[type="week"],
+[type="checkbox"],
+[multiple],
+textarea,
+select {
+  @apply border-gray-300 rounded-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500;
+}
+
+label {
+  @apply text-sm font-bold pb-1 block cursor-pointer;
+}
+
+button,
+a.button {
+  @apply inline-flex self-center justify-center items-center space-x-2 rounded-sm px-6 py-2 font-bold text-sm transition-colors ease-in-out duration-300 focus:ring-2;
+}
+
+.button-primary {
+  @apply bg-indigo-700 text-white hover:bg-indigo-800 focus:ring-indigo-200;
+}
+
+.button-danger {
+  @apply bg-red-700 text-white hover:bg-red-800 focus:ring-red-200;
+}

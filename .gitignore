@@ -35,3 +35,5 @@ npm-debug.log
 
 # All user generated source code will live here
 /projects/
+
+.DS_Store

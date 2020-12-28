@@ -1,0 +1,37 @@
+<div class="container grid place-items-center h-full">
+  <div class="flex flex-col justify-center items-center space-y-6">
+    <span class="icon block text-transparent">
+      <%= PhoenixInlineSvg.Helpers.svg_image(@conn, "logo-full", "branding", class: "h-16 w-full") %>
+    </span>
+
+    <nav class="flex items-center space-x-6 text-gray-600">
+      <%= if @current_user do %>
+        <%= @current_user.name %>
+        <%= link to: Routes.project_index_path(@conn, :index) do %>
+          Projects
+        <% end  %>
+        <%= link "Settings", to: Routes.profile_settings_path(@conn, :edit) %>
+        <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %>
+      <% else %>
+        <%= link to: Routes.user_registration_path(@conn, :new), class: "flex items-center space-x-2" do %>
+          <span class="icon w-6 h-6 inline-flex">
+            <%= PhoenixInlineSvg.Helpers.svg_image(@conn, "user-plus", "phosphor/regular", class: "h-auto") %>
+          </span>
+          <span>Register</span>
+        <% end %>
+        <%= link to: Routes.user_session_path(@conn, :new), class: "flex items-center space-x-2" do %>
+          <span class="icon w-6 h-6 inline-flex">
+            <%= PhoenixInlineSvg.Helpers.svg_image(@conn, "sign-in", "phosphor/regular", class: "h-auto") %>
+          </span>
+          <span>Log in</span>
+        <% end %>
+      <% end %>
+      <%= link to: "/dashboard", class: "flex items-center space-x-2" do %>
+        <span class="icon w-6 h-6 inline-flex">
+          <%= PhoenixInlineSvg.Helpers.svg_image(@conn, "chart-line", "phosphor/regular", class: "h-auto") %>
+        </span>
+        <span>Dashboard</span>
+      <% end %>
+    </nav>
+  </div>
+</div>

@@ -32,7 +32,7 @@ jobs:
            ${{ runner.os }}-mix-
      - uses: actions/setup-node@v1
        with:
-         node-version: '10.x'
+         node-version: '14.x'
 
      - run: mix local.rebar --force
      - run: mix local.hex --force
