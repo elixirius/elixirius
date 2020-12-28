@@ -1,6 +1,8 @@
 <div class="container grid place-items-center h-full">
   <div class="flex flex-col justify-center items-center space-y-6">
-    <img src="<%= Routes.static_path(@conn, "/images/logo-full.svg") %>" class="h-16" />
+    <span class="icon block text-transparent">
+      <%= PhoenixInlineSvg.Helpers.svg_image(@conn, "logo-full", "branding", class: "h-16 w-full") %>
+    </span>
 
     <h1 class="font-bold text-lg text-indigo-700">Log in</h1>
 

@@ -23,7 +23,7 @@ label {
 
 button,
 a.button {
-  @apply inline-flex items-center space-x-2 rounded-sm px-6 py-2 font-bold text-sm transition-colors ease-in-out duration-300 focus:ring-2;
+  @apply inline-flex self-center justify-center items-center space-x-2 rounded-sm px-6 py-2 font-bold text-sm transition-colors ease-in-out duration-300 focus:ring-2;
 }
 
 .button-primary {
