@@ -27,7 +27,7 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Set the svg icons directory to inline
-config :phoenix_inline_svg, dir: "/priv/static/images/icons"
+config :phoenix_inline_svg, dir: "/priv/static/svg"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

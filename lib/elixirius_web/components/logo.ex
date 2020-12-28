@@ -8,7 +8,7 @@ defmodule ElixiriusWeb.Components.Logo do
   def render(assigns) do
     ~H"""
     <LivePatch to={{ project_index_path(@socket, :index) }}>
-      <img src={{ ElixiriusWeb.Router.Helpers.static_path(@socket, "/images/logo.svg") }} />
+      <img src={{ static_path(@socket, "/svg/branding/logo.svg") }} />
     </LivePatch>
     """
   end
