@@ -66,7 +66,7 @@ defmodule Elixirius.Workshop do
     |> maybe_seed_project(run_seed?())
   end
 
-  # TODO: Maybe we need better solution than ENV flag
+  # TODO: Maybe we need better solution than ENV flag // Mix.env() in [:dev, :test]
   defp run_seed? do
     System.get_env("MIX_ENV") == "dev" || System.get_env("MIX_ENV") == "prod"
   end

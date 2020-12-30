@@ -4,12 +4,14 @@ defmodule ElixiriusWeb.Components.Header do
   alias ElixiriusWeb.Components, as: UI
   alias Surface.Components.Context
 
+  alias ElixiriusWeb.Router.Helpers, as: Routes
+
   def render(assigns) do
     ~H"""
     <Context get={{ project: project }}>
       <header class="px-8 py-4 flex items-center justify-between border-b border-gray-100">
         <div class="flex items-center">
-          <UI.Logo />
+          <UI.Logo to={{ Routes.project_index_path(@socket, :index) }} />
           <h1
             :if={{ project }}
             class="font-semibold ml-2 text-indigo-700 text-sm"

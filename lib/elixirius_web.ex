@@ -47,6 +47,30 @@ defmodule ElixiriusWeb do
     end
   end
 
+  def surface_component do
+    quote do
+      use Surface.Component
+
+      alias Surface.Components.Context
+      alias ElixiriusWeb.Components, as: UI
+      alias Surface.Components.LivePatch
+
+      unquote(view_helpers())
+    end
+  end
+
+  def surface_live_view do
+    quote do
+      use Surface.LiveView
+
+      alias Surface.Components.Context
+      alias ElixiriusWeb.Components, as: UI
+      alias Surface.Components.LivePatch
+
+      unquote(view_helpers())
+    end
+  end
+
   def router do
     quote do
       use Phoenix.Router

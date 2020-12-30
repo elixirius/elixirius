@@ -1,14 +1,13 @@
 defmodule ElixiriusWeb.Components.Logo do
-  use Surface.Component
+  use ElixiriusWeb, :surface_component
 
-  import ElixiriusWeb.Router.Helpers
-
-  alias Surface.Components.LivePatch
+  prop to,   :string, required: true
+  prop type, :string, default: "logo"
 
   def render(assigns) do
     ~H"""
-    <LivePatch to={{ project_index_path(@socket, :index) }}>
-      <img src={{ static_path(@socket, "/svg/branding/logo.svg") }} />
+    <LivePatch to={{ @to }}>
+      <img src={{ Routes.static_path(@socket, "/svg/branding/#{@type}.svg") }} />
     </LivePatch>
     """
   end

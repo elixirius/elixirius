@@ -15,28 +15,7 @@ defmodule ElixiriusWeb.Router do
     plug :fetch_current_user
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  scope "/", ElixiriusWeb do
-    pipe_through :browser
-
-    get "/", HomeController, :index
-  end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", ElixiriusWeb do
-  #   pipe_through :api
-  # end
-
   # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
@@ -47,13 +26,14 @@ defmodule ElixiriusWeb.Router do
   end
 
   ## Authentication routes
-
   scope "/", ElixiriusWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    get "/join", UserRegistrationController, :new
+    live "/",      HomeLive.Index, :index, session: {__MODULE__, :with_session, []}
+    live "/join",  HomeLive.Join,  :new, session: {__MODULE__, :with_session, []}
+    live "/enter", HomeLive.Enter, :new, session: {__MODULE__, :with_session, []}
+
     post "/join", UserRegistrationController, :create
-    get "/enter", UserSessionController, :new
     post "/enter", UserSessionController, :create
     get "/profile/reset_password", UserResetPasswordController, :new
     post "/profile/reset_password", UserResetPasswordController, :create
@@ -70,17 +50,15 @@ defmodule ElixiriusWeb.Router do
     live "/profile/settings", ProfileLive.Settings, :edit,
       session: {__MODULE__, :with_session, []}
 
-    live "/projects", ProjectLive.Index, :index, session: {__MODULE__, :with_session, []}
-    live "/projects/new", ProjectLive.Index, :new, session: {__MODULE__, :with_session, []}
-    live "/:project_slug", ProjectLive.Show, :show, session: {__MODULE__, :with_session, []}
+    live "/projects",      ProjectLive.Index, :index, session: {__MODULE__, :with_session, []}
+    live "/projects/new",  ProjectLive.Index, :new,   session: {__MODULE__, :with_session, []}
+    live "/:project_slug", ProjectLive.Show,  :show,  session: {__MODULE__, :with_session, []}
 
-    live "/:project_slug/setup", ProjectLive.Show, :setup,
+    live "/:project_slug/setup", Live.Project.Show, :setup,
       session: {__MODULE__, :with_session, []}
   end
 
-  def with_session(conn) do
-    %{"current_user" => conn.assigns.current_user}
-  end
+  def with_session(conn), do: %{"current_user" => conn.assigns.current_user}
 
   scope "/", ElixiriusWeb do
     pipe_through [:browser]
