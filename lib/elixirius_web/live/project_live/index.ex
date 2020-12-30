@@ -78,7 +78,7 @@ defmodule ElixiriusWeb.ProjectLive.Index do
         >
           <p class="text-xl">
             You have no projects. <br />
-            Create a new one to see how awesome <strong>Elixirium</strong> is!
+            Create a new one to see how awesome <strong>Elixirius</strong> is!
           </p>
 
           <LivePatch

@@ -15,7 +15,7 @@ defmodule Elixirius.Workshop.Project do
     timestamps()
   end
 
-  @reserved_slugs ~w(new projects project join enter profile elixirium elixir ecto postgres)
+  @reserved_slugs ~w(new projects project join enter profile elixirium elixirius elixir ecto postgres)
   @slug_regex ~r/^[A-Za-z0-9-]+$/
 
   @doc false
