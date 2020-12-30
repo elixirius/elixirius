@@ -1,7 +1,7 @@
 defmodule ElixiriusWeb.ProjectLive.Show do
   @moduledoc false
 
-  use Surface.LiveView
+  use Surface.LiveView, container: {:div, class: "h-full"}
 
   import ElixiriusWeb.Router.Helpers
 
@@ -43,7 +43,7 @@ defmodule ElixiriusWeb.ProjectLive.Show do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user, project: @project }}>
-      <UI.Layouts.AppLayout flash={{ @flash }}>
+      <UI.Layouts.AppLayout flash={{ @flash }} no_padding>
         <UI.Modal
           :if={{ @live_action in [:setup] }}
           id={{ "project-setup" }}
@@ -58,7 +58,7 @@ defmodule ElixiriusWeb.ProjectLive.Show do
           />
         </UI.Modal>
 
-        project builder might be here
+        <UI.Canvas id="canvas_id" />
       </UI.Layouts.AppLayout>
     </Context>
     """

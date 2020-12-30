@@ -1,4 +1,7 @@
-.icon svg,
 .icon svg * {
   stroke: currentColor !important;
+}
+
+.icon svg > rect[width='256'] {
+  stroke: none !important;
 }

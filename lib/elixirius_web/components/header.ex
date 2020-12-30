@@ -7,7 +7,7 @@ defmodule ElixiriusWeb.Components.Header do
   def render(assigns) do
     ~H"""
     <Context get={{ project: project }}>
-      <header class="px-8 py-4 flex items-center justify-between border-b border-gray-100">
+      <header class="px-4 py-4 flex items-center justify-between border-b border-gray-200">
         <div class="flex items-center">
           <UI.Logo />
           <h1

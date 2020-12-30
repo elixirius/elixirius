@@ -6,12 +6,13 @@ defmodule ElixiriusWeb.Components.Layouts.AppLayout do
   slot default
 
   prop flash, :map
+  prop no_padding, :boolean, default: false
 
   # --- Component
 
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="flex flex-col h-full">
       <p
         :if={{ live_flash(@flash, :info) }}
         class="alert alert-info"
@@ -30,7 +31,7 @@ defmodule ElixiriusWeb.Components.Layouts.AppLayout do
 
       <UI.Header />
 
-      <main class="p-8">
+      <main class={{ "flex-1", "p-4": !@no_padding }}>
         <slot />
       </main>
     </div>
