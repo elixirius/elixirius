@@ -1,4 +1,4 @@
-defmodule ElixiriusWeb.HomeLive.Enter do
+defmodule ElixiriusWeb.HomeLive.ForgotPassword do
   use ElixiriusWeb, :surface_live_view
 
   alias Surface.Components.{
@@ -10,6 +10,9 @@ defmodule ElixiriusWeb.HomeLive.Enter do
     Form.ErrorTag
   }
 
+  alias Elixirius.Accounts
+  alias Elixirius.Accounts.User
+
   # --- Component
   @impl true
   def render(assigns) do
@@ -17,38 +20,28 @@ defmodule ElixiriusWeb.HomeLive.Enter do
     <UI.Layouts.AuthLayout flash={{ @flash }}>
       <div class="grid place-items-center h-full">
         <UI.Heading>
-          Log In
+          Forgot your password?
         </UI.Heading>
 
         <div class="space-y-6">
           <Form
+            opts={{ class: "space-y-3" }}
             for={{ :user }}
-            opts={{ class: "space-y-3", method: "POST" }}
-            action={{ Routes.user_session_path(@socket, :create) }}
+            submit="submit"
           >
+
             <Field name="email">
               <Label/>
               <TextInput />
               <ErrorTag />
             </Field>
 
-            <Field name="password">
-              <Label/>
-              <PasswordInput />
-              <ErrorTag />
-            </Field>
-
-            <div class="flex items-center">
-              <input type="checkbox" id="remember_me" name="remember_me">
-              <label for="remember_me">Keep me logged in for 60 days</label>
-            </div>
-
             <button
               class="button-primary"
               type="submit"
-              phx-disable-with="Updating..."
+              phx-disable-with="Sending..."
             >
-              Log in
+              Send instructions to reset password
             </button>
           </Form>
         </div>
@@ -58,12 +51,30 @@ defmodule ElixiriusWeb.HomeLive.Enter do
             Register
           </LivePatch>
 
-          <LivePatch to={{ Routes.home_forgot_password_path(@socket, :new) }}>
-            Forgot your password?
+          <LivePatch to={{ Routes.home_enter_path(@socket, :new) }}>
+            Log In
           </LivePatch>
         </nav>
       </div>
     </UI.Layouts.AuthLayout>
     """
+  end
+
+  def handle_event("submit", %{"user" => %{"email" => email}}, socket) do
+    if user = Accounts.get_user_by_email(email) do
+      Accounts.deliver_user_reset_password_instructions(
+        user,
+        &Routes.home_reset_password_url(socket, :edit, &1)
+      )
+    end
+
+    # Regardless of the outcome, show an impartial success/error message.
+    {:noreply,
+     socket
+     |> put_flash(
+       :info,
+       "If your email is in our system, you will receive instructions to reset your password shortly."
+     )
+     |> push_redirect(to: "/")}
   end
 end

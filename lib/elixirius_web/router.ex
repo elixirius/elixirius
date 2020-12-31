@@ -29,16 +29,16 @@ defmodule ElixiriusWeb.Router do
   scope "/", ElixiriusWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
-    live "/",      HomeLive.Index, :index, session: {__MODULE__, :with_session, []}
-    live "/join",  HomeLive.Join,  :new, session: {__MODULE__, :with_session, []}
-    live "/enter", HomeLive.Enter, :new, session: {__MODULE__, :with_session, []}
+    live "/", HomeLive.Index, :index, session: {__MODULE__, :with_session, []}
 
+    live "/join", HomeLive.Join, :new, session: {__MODULE__, :with_session, []}
     post "/join", UserRegistrationController, :create
+
+    live "/enter", HomeLive.Enter, :new, session: {__MODULE__, :with_session, []}
     post "/enter", UserSessionController, :create
-    get "/profile/reset_password", UserResetPasswordController, :new
-    post "/profile/reset_password", UserResetPasswordController, :create
-    get "/profile/reset_password/:token", UserResetPasswordController, :edit
-    put "/profile/reset_password/:token", UserResetPasswordController, :update
+
+    live "/profile/reset_password", HomeLive.ForgotPassword, :new
+    live "/profile/reset_password/:token", HomeLive.ResetPassword, :edit
   end
 
   scope "/", ElixiriusWeb do
@@ -50,11 +50,11 @@ defmodule ElixiriusWeb.Router do
     live "/profile/settings", ProfileLive.Settings, :edit,
       session: {__MODULE__, :with_session, []}
 
-    live "/projects",      ProjectLive.Index, :index, session: {__MODULE__, :with_session, []}
-    live "/projects/new",  ProjectLive.Index, :new,   session: {__MODULE__, :with_session, []}
-    live "/:project_slug", ProjectLive.Show,  :show,  session: {__MODULE__, :with_session, []}
+    live "/projects", ProjectLive.Index, :index, session: {__MODULE__, :with_session, []}
+    live "/projects/new", ProjectLive.Index, :new, session: {__MODULE__, :with_session, []}
+    live "/:project_slug", ProjectLive.Show, :show, session: {__MODULE__, :with_session, []}
 
-    live "/:project_slug/setup", Live.Project.Show, :setup,
+    live "/:project_slug/setup", ProjectLive.Show, :setup,
       session: {__MODULE__, :with_session, []}
   end
 
@@ -64,8 +64,10 @@ defmodule ElixiriusWeb.Router do
     pipe_through [:browser]
 
     delete "/profile/log_out", UserSessionController, :delete
-    get "/profile/confirm", UserConfirmationController, :new
-    post "/profile/confirm", UserConfirmationController, :create
-    get "/profile/confirm/:token", UserConfirmationController, :confirm
+
+    # TODO: Migrate views to Surface and enable account confirmation
+    # get "/profile/confirm", UserConfirmationController, :new
+    # post "/profile/confirm", UserConfirmationController, :create
+    # get "/profile/confirm/:token", UserConfirmationController, :confirm
   end
 end

@@ -5,6 +5,7 @@ defmodule ElixiriusWeb.Components.Profile.Form do
   import ElixiriusWeb.Router.Helpers
 
   alias Elixirius.Accounts
+
   alias Surface.Components.{
     Form,
     Form.Field,

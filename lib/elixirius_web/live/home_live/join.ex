@@ -24,11 +24,6 @@ defmodule ElixiriusWeb.HomeLive.Join do
      |> assign(:changeset, changeset)}
   end
 
-  @impl true
-  def handle_params(_, _, socket) do
-    {:noreply, socket}
-  end
-
   # --- Component
   @impl true
   def render(assigns) do
@@ -76,10 +71,10 @@ defmodule ElixiriusWeb.HomeLive.Join do
 
         <nav class="flex flex-col space-y-2 text-indigo-700 text-center">
           <LivePatch to={{ Routes.home_enter_path(@socket, :new) }}>
-            Log in
+            Log In
           </LivePatch>
 
-          <LivePatch to={{ Routes.user_reset_password_path(@socket, :new) }}>
+          <LivePatch to={{ Routes.home_forgot_password_path(@socket, :new) }}>
             Forgot your password?
           </LivePatch>
         </nav>

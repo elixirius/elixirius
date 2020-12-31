@@ -7,6 +7,7 @@ defmodule ElixiriusWeb do
 
       import Plug.Conn
       import ElixiriusWeb.Gettext
+      import Phoenix.LiveView.Controller
       alias ElixiriusWeb.Router.Helpers, as: Routes
     end
   end

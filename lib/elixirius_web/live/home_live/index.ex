@@ -12,7 +12,6 @@ defmodule ElixiriusWeb.HomeLive.Index do
     }
   end
 
-  # TODO: handle redirect to /project in case of present user
   @impl true
   def handle_params(_, _, socket) do
     {:noreply, socket}
