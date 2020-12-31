@@ -73,15 +73,7 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
           </Form>
         </div>
 
-        <nav class="flex flex-col space-y-2 text-indigo-700 text-center">
-          <LivePatch to={{ Routes.home_join_path(@socket, :new) }}>
-            Register
-          </LivePatch>
-
-          <LivePatch to={{ Routes.home_enter_path(@socket, :new) }}>
-            Log In
-          </LivePatch>
-        </nav>
+        <UI.Home.AuthLinks register={{ true }} login={{ true }} />
       </div>
     </UI.Layouts.AuthLayout>
     """

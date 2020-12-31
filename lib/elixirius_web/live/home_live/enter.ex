@@ -53,15 +53,7 @@ defmodule ElixiriusWeb.HomeLive.Enter do
           </Form>
         </div>
 
-        <nav class="flex flex-col space-y-2 text-indigo-700 text-center">
-          <LivePatch to={{ Routes.home_join_path(@socket, :new) }}>
-            Register
-          </LivePatch>
-
-          <LivePatch to={{ Routes.home_forgot_password_path(@socket, :new) }}>
-            Forgot your password?
-          </LivePatch>
-        </nav>
+        <UI.Home.AuthLinks register={{ true }} forgot_password={{ true }} />
       </div>
     </UI.Layouts.AuthLayout>
     """
