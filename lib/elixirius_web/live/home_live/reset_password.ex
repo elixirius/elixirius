@@ -4,7 +4,6 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
   alias Surface.Components.{
     Form,
     Form.Field,
-    Form.TextInput,
     Form.PasswordInput,
     Form.Label,
     Form.ErrorTag
@@ -75,12 +74,13 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
           </Form>
         </div>
 
-        <UI.Home.AuthLinks register={{ true }} login={{ true }} />
+        <UI.Home.AuthLinks register={{ true }} enter={{ true }} />
       </div>
     </UI.Layouts.AuthLayout>
     """
   end
 
+  @impl true
   def handle_event("validate", %{"user" => user_params}, socket) do
     password = Map.merge(socket.assigns.password, user_params)
 
@@ -94,6 +94,7 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
      |> assign(:password, password)}
   end
 
+  @impl true
   def handle_event("submit", %{"user" => user_params}, socket) do
     case Accounts.reset_user_password(socket.assigns.user, user_params) do
       {:ok, _} ->
