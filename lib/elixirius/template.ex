@@ -14,7 +14,8 @@ defmodule Elixirius.Template do
     module_name = Naming.modulize(project_name)
     underscore_name = Naming.undersorize(project_name)
 
-    with true <- copy_template(project_id),
+    with true <- prepare_directory(project_id),
+         true <- copy_template(project_id),
          true <- rename_core_dirs_and_files(project_id, underscore_name),
          true <- find_and_replace(project_id, @module_name, module_name),
          true <- find_and_replace(project_id, @underscore_name, underscore_name),
@@ -24,6 +25,12 @@ defmodule Elixirius.Template do
     else
       error -> IO.inspect(error, label: "Failed to seed new project #{project_id}")
     end
+  end
+
+  defp prepare_directory(project_id) do
+    File.mkdir_p("projects")
+
+    true
   end
 
   defp copy_template(project_id) do

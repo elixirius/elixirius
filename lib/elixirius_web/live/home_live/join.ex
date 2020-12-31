@@ -75,6 +75,7 @@ defmodule ElixiriusWeb.HomeLive.Join do
     """
   end
 
+  @impl true
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset =
       Accounts.change_user_registration(%User{}, user_params)

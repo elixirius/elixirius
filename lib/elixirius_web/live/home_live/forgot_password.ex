@@ -5,13 +5,11 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
     Form,
     Form.Field,
     Form.TextInput,
-    Form.PasswordInput,
     Form.Label,
     Form.ErrorTag
   }
 
   alias Elixirius.Accounts
-  alias Elixirius.Accounts.User
 
   # --- Component
   @impl true
@@ -52,6 +50,7 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
     """
   end
 
+  @impl true
   def handle_event("submit", %{"user" => %{"email" => email}}, socket) do
     if user = Accounts.get_user_by_email(email) do
       Accounts.deliver_user_reset_password_instructions(
