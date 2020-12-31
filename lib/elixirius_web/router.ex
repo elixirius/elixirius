@@ -66,8 +66,8 @@ defmodule ElixiriusWeb.Router do
     delete "/profile/log_out", UserSessionController, :delete
 
     # TODO: Migrate views to Surface and enable account confirmation
-    # get "/profile/confirm", UserConfirmationController, :new
-    # post "/profile/confirm", UserConfirmationController, :create
-    # get "/profile/confirm/:token", UserConfirmationController, :confirm
+    get "/profile/confirm", UserConfirmationController, :new
+    post "/profile/confirm", UserConfirmationController, :create
+    get "/profile/confirm/:token", UserConfirmationController, :confirm
   end
 end
