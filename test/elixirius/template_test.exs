@@ -12,7 +12,7 @@ defmodule Elixirius.TemplateTest do
   end
 
   describe "seed_project/0" do
-    test "returns elixirius app version" do
+    test "generate new app via basic template" do
       project_id = generate_unique_project_id()
       Template.seed_project(project_id, "TestApp")
 
@@ -24,6 +24,9 @@ defmodule Elixirius.TemplateTest do
 
       # Rename SampleApp and sample_app
       {:ok, file} = File.read("projects/#{project_id}/lib/testapp.ex")
+
+      file |> IO.inspect()
+
       assert String.starts_with?(file, "defmodule Testapp") == true
 
       {:ok, file} = File.read("projects/#{project_id}/lib/testapp_web.ex")
