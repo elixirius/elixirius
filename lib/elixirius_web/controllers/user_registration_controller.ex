@@ -5,12 +5,7 @@ defmodule ElixiriusWeb.UserRegistrationController do
 
   alias Elixirius.Accounts
   alias Elixirius.Accounts.User
-  alias ElixiriusWeb.UserAuth
-
-  def new(conn, _params) do
-    changeset = Accounts.change_user_registration(%User{})
-    render(conn, "new.html", changeset: changeset)
-  end
+  alias ElixiriusWeb.{UserAuth, HomeLive}
 
   def create(conn, %{"user" => user_params}) do
     case Accounts.register_user(user_params) do
@@ -26,7 +21,7 @@ defmodule ElixiriusWeb.UserRegistrationController do
         |> UserAuth.log_in_user(user)
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        live_render(conn, HomeLive.Join)
     end
   end
 end

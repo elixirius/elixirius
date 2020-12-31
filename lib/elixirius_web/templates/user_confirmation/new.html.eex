@@ -18,8 +18,8 @@
     <% end %>
 
     <nav class="flex flex-col space-y-2 text-indigo-700 text-center">
-      <%= link "Register", to: Routes.user_registration_path(@conn, :new) %>
-      <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+      <%= link "Register", to: Routes.home_join_path(@conn, :new) %>
+      <%= link "Log in", to: Routes.home_enter_path(@conn, :new) %>
     </nav>
   </div>
 </div>

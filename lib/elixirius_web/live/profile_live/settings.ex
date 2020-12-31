@@ -1,8 +1,5 @@
 defmodule ElixiriusWeb.ProfileLive.Settings do
-  use Surface.LiveView
-
-  alias Surface.Components.Context
-  alias ElixiriusWeb.Components, as: UI
+  use ElixiriusWeb, :surface_live_view
 
   prop page_title, :string, default: "Profile Settings"
   prop current_user, :map

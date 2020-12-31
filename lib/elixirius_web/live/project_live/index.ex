@@ -28,8 +28,6 @@ defmodule ElixiriusWeb.ProjectLive.Index do
   end
 
   @impl true
-  @spec handle_params(any, any, Phoenix.LiveView.Socket.t()) ::
-          {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
@@ -80,7 +78,7 @@ defmodule ElixiriusWeb.ProjectLive.Index do
         >
           <p class="text-xl">
             You have no projects. <br />
-            Create a new one to see how awesome <strong>Elixirium</strong> is!
+            Create a new one to see how awesome <strong>Elixirius</strong> is!
           </p>
 
           <LivePatch
