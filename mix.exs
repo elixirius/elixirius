@@ -62,7 +62,13 @@ defmodule Elixirius.MixProject do
       {:vex, "~> 0.8.0"},
       {:surface, "~> 0.1.1"},
       {:phoenix_inline_svg, "~> 1.4"},
-      {:porcelain, "~> 2.0"}
+      {:porcelain, "~> 2.0"},
+      {:nary_tree, ">= 0.0.0"},
+      {:elixir_uuid, "~> 1.2"},
+      {:makeup, "~> 1.0.5"},
+      {:makeup_elixir, "~> 0.15.0"},
+      {:atomic_map, "~> 0.8"},
+      {:earmark, "~> 1.4.10"}
     ]
   end
 
