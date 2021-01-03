@@ -53,7 +53,7 @@ defmodule ElixiriusWeb.HomeLive.Enter do
           </Form>
         </div>
 
-        <UI.Home.AuthLinks register={{ true }} forgot_password={{ true }} />
+        <UI.Home.AuthLinks register forgot_password />
       </div>
     </UI.Layouts.AuthLayout>
     """

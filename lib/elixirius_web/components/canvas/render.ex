@@ -14,7 +14,7 @@ defmodule ElixiriusWeb.Components.Render do
       <div>
         {{ live_component(
             @socket,
-            Module.concat(["ElixiriusWeb","Components", @node.content.element]),
+            Module.concat(["ElixiriusParts", @node.content.element]),
             Map.merge(@node.content.attr, %{__surface__: %{provided_templates: []}})
           )
         }}

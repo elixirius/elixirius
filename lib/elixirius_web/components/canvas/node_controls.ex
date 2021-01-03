@@ -18,7 +18,7 @@ defmodule ElixiriusWeb.Components.NodeControls do
             <TextInput value={{ @node.content.id }} opts={{ hidden: true }} />
           </Field>
           <ul class="flex flex-col space-y-3">
-            <li :for={{ prop <- Module.concat(["ElixiriusWeb", "Components", @node.content.element]).__props__() }}>
+            <li :for={{ prop <- Module.concat(["ElixiriusParts", @node.content.element]).__props__() }}>
               <Field name={{ prop.name }} :if={{ prop.name != :id }}>
                 <Label class="font-bold block text-xs text-gray-600">
                   {{ Phoenix.Naming.humanize(prop.name) }}

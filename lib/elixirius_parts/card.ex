@@ -1,4 +1,4 @@
-defmodule ElixiriusWeb.Components.Card do
+defmodule ElixiriusParts.Card do
   use Surface.LiveComponent
 
   @doc "Card title"

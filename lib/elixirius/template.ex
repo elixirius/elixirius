@@ -9,12 +9,14 @@ defmodule Elixirius.Template do
   @default_template "phoenix_live_no_db_v1"
   @module_name "SampleApp"
   @underscore_name "sample_app"
+  @projects_dir "projects"
 
   def seed_project(project_id, project_name) do
     module_name = Naming.modulize(project_name)
     underscore_name = Naming.undersorize(project_name)
 
-    with true <- copy_template(project_id),
+    with true <- prepare_directory(project_id),
+         true <- copy_template(project_id),
          true <- rename_core_dirs_and_files(project_id, underscore_name),
          true <- find_and_replace(project_id, @module_name, module_name),
          true <- find_and_replace(project_id, @underscore_name, underscore_name),
@@ -24,6 +26,12 @@ defmodule Elixirius.Template do
     else
       error -> IO.inspect(error, label: "Failed to seed new project #{project_id}")
     end
+  end
+
+  defp prepare_directory(project_id) do
+    File.mkdir_p(@projects_dir)
+
+    true
   end
 
   defp copy_template(project_id) do

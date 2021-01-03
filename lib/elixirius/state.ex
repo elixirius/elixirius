@@ -94,7 +94,7 @@ defmodule Elixirius.State do
   end
 
   def append_node(state, element) do
-    module = Module.concat(["ElixiriusWeb", "Components", element])
+    module = Module.concat(["ElixiriusParts", element])
 
     attr = Map.new(Surface.default_props(module))
 

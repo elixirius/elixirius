@@ -7,7 +7,7 @@ defmodule ElixiriusWeb.Components.NodeDocs do
     ~H"""
     <div class="text-sm">
       <div class="markdown text-gray-600">
-        {{ raw(get_html(get_docs(Module.concat ["ElixiriusWeb", "Components", @node.content.element]))) }}
+        {{ raw(get_html(get_docs(Module.concat ["ElixiriusParts", @node.content.element]))) }}
       </div>
       <style>
         .markdown h3 {

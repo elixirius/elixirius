@@ -69,12 +69,13 @@ defmodule ElixiriusWeb.HomeLive.Join do
           </Form>
         </div>
 
-        <UI.Home.AuthLinks register={{ true }} forgot_password={{ true }} />
+        <UI.Home.AuthLinks enter forgot_password />
       </div>
     </UI.Layouts.AuthLayout>
     """
   end
 
+  @impl true
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset =
       Accounts.change_user_registration(%User{}, user_params)

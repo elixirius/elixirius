@@ -44,7 +44,7 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
           </Form>
         </div>
 
-        <UI.Home.AuthLinks register={{ true }} enter={{ true }} />
+        <UI.Home.AuthLinks register enter />
       </div>
     </UI.Layouts.AuthLayout>
     """
