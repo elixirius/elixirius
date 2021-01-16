@@ -4,23 +4,20 @@ defmodule ElixiriusWeb.HomeLive.Enter do
   alias Surface.Components.{
     Form,
     Form.Field,
-    Form.TextInput,
+    Form.EmailInput,
     Form.PasswordInput,
     Form.Label,
-    Form.ErrorTag
+    Form.ErrorTag,
+    Form.Checkbox
   }
 
   # --- Component
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }}>
+    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Sign in to your account">
       <div class="grid place-items-center h-full">
-        <UI.Heading>
-          Log In
-        </UI.Heading>
-
-        <div class="space-y-6">
+        <div class="space-y-6 mb-6">
           <Form
             for={{ :user }}
             opts={{ class: "space-y-3", method: "POST" }}
@@ -28,28 +25,30 @@ defmodule ElixiriusWeb.HomeLive.Enter do
           >
             <Field name="email">
               <Label/>
-              <TextInput />
+              <EmailInput opts={{ required: true }} />
               <ErrorTag />
             </Field>
 
             <Field name="password">
               <Label/>
-              <PasswordInput />
+              <PasswordInput opts={{ required: true }} />
               <ErrorTag />
             </Field>
 
-            <div class="flex items-center">
-              <input type="checkbox" id="remember_me" name="remember_me">
-              <label for="remember_me">Keep me logged in for 60 days</label>
-            </div>
+            <Field name="remember_me" class="flex items-center">
+              <Checkbox class="mr-3" />
+              <Label class="pb-0" />
+            </Field>
 
-            <button
-              class="button-primary"
-              type="submit"
-              phx-disable-with="Updating..."
-            >
-              Log in
-            </button>
+            <div class="flex justify-center">
+              <button
+                class="button-primary"
+                type="submit"
+                phx-disable-with="Updating..."
+              >
+                Sign in
+              </button>
+            </div>
           </Form>
         </div>
 

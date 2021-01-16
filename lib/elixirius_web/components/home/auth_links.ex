@@ -7,7 +7,7 @@ defmodule ElixiriusWeb.Components.Home.AuthLinks do
 
   def render(assigns) do
     ~H"""
-    <nav class="flex flex-col space-y-2 text-indigo-700 text-center">
+    <nav class="flex flex-col space-y-1 text-indigo-700 text-center text-sm font-medium">
       <LivePatch :if={{ @register }} to={{ Routes.home_join_path(@socket, :new) }}>
         Register
       </LivePatch>

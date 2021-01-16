@@ -31,6 +31,10 @@ config :phoenix_inline_svg, dir: "/priv/static/svg"
 
 config :porcelain, driver: Porcelain.Driver.Basic
 
+config :surface, :components, [
+  {Surface.Components.Form.ErrorTag, default_class: "flex text-red-700"}
+]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

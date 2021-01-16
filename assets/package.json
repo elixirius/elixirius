@@ -15,15 +15,13 @@
     "postcss-import": "^14.0.0",
     "postcss-loader": "^4.1.0",
     "tailwindcss": "^2.0.2",
-    "topbar": "^0.1.4"
+    "topbar": "^1.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^7.x",
     "css-loader": "^5.x",
     "css-minimizer-webpack-plugin": "^1.x",
+    "esbuild-loader": "^2.7.0",
     "mini-css-extract-plugin": "^1.x",
     "webpack": "^5.x",
     "webpack-cli": "^4.x"

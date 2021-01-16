@@ -1,6 +1,7 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-@import "./_form.css";
-@import "./_icon.css";
+@import './_fonts.css';
+@import './_form.css';
+@import './_icon.css';

@@ -5,6 +5,7 @@ defmodule ElixiriusWeb.HomeLive.Join do
     Form,
     Form.Field,
     Form.TextInput,
+    Form.EmailInput,
     Form.PasswordInput,
     Form.Label,
     Form.ErrorTag
@@ -12,6 +13,8 @@ defmodule ElixiriusWeb.HomeLive.Join do
 
   alias Elixirius.Accounts
   alias Elixirius.Accounts.User
+
+  prop changeset, :any
 
   # -- Events
 
@@ -28,13 +31,9 @@ defmodule ElixiriusWeb.HomeLive.Join do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }}>
+    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Sign up for a new account">
       <div class="grid place-items-center h-full">
-        <UI.Heading>
-          Register
-        </UI.Heading>
-
-        <div class="space-y-6">
+        <div class="space-y-6 mb-6">
           <Form
             change="validate"
             opts={{ class: "space-y-3", method: "POST" }}
@@ -43,29 +42,31 @@ defmodule ElixiriusWeb.HomeLive.Join do
           >
             <Field name="name">
               <Label/>
-              <TextInput value={{ @changeset.changes["name"] }} />
-              <ErrorTag />
+              <TextInput value={{ @changeset.changes["name"] }} opts={{ required: true }} />
+              <ErrorTag class="flex text-red-700 text-sm" />
             </Field>
 
             <Field name="email">
               <Label/>
-              <TextInput value={{ @changeset.changes["email"] }} />
-              <ErrorTag />
+              <EmailInput value={{ @changeset.changes["email"] }} opts={{ required: true }} />
+              <ErrorTag class="flex text-red-700 text-sm" />
             </Field>
 
             <Field name="password">
               <Label/>
-              <PasswordInput />
-              <ErrorTag />
+              <PasswordInput opts={{ required: true }} />
+              <ErrorTag class="flex text-red-700  text-sm" />
             </Field>
 
-            <button
-              class="button-primary"
-              type="submit"
-              phx-disable-with="Updating..."
-            >
-              Register
-            </button>
+            <div class="flex justify-center">
+              <button
+                class="button-primary"
+                type="submit"
+                phx-disable-with="Updating..."
+              >
+                Register
+              </button>
+            </div>
           </Form>
         </div>
 
