@@ -12,6 +12,11 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
   alias Elixirius.Accounts
   alias Elixirius.Accounts.User
 
+  prop changeset, :changeset, required: true
+  prop password, :string
+  prop token, :string
+  prop user, :any
+
   # -- Events
 
   # @impl true
@@ -39,13 +44,9 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }}>
+    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Set new password">
       <div class="grid place-items-center h-full">
-        <UI.Heading>
-          Register
-        </UI.Heading>
-
-        <div class="space-y-6">
+        <div class="space-y-6 mb-6">
           <Form
             submit="submit"
             change="validate"
@@ -54,23 +55,25 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
           >
             <Field name="password">
               <Label/>
-              <PasswordInput value= {{ @password["password"] }} />
+              <PasswordInput value={{ @password["password"] }} />
               <ErrorTag />
             </Field>
 
             <Field name="password_confirmation">
               <Label/>
-              <PasswordInput value= {{ @password["password_confirmation"] }} />
+              <PasswordInput value={{ @password["password_confirmation"] }} />
               <ErrorTag />
             </Field>
 
-            <button
-              class="button-primary"
-              type="submit"
-              phx-disable-with="Updating..."
-            >
-              Reset password
-            </button>
+            <div class="flex justify-center">
+              <button
+                class="button-primary"
+                type="submit"
+                phx-disable-with="Updating..."
+              >
+                Reset password
+              </button>
+            </div>
           </Form>
         </div>
 
