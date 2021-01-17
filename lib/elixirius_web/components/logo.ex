@@ -3,11 +3,17 @@ defmodule ElixiriusWeb.Components.Logo do
 
   prop to, :string, required: true
   prop type, :string, default: "logo"
+  prop class, :css_class, default: []
 
   def render(assigns) do
     ~H"""
     <LivePatch to={{ @to }}>
-      <img src={{ Routes.static_path(@socket, "/svg/branding/#{@type}.svg") }} />
+      {{ PhoenixInlineSvg.Helpers.svg_image(
+        @socket.endpoint,
+        @type,
+        "branding",
+        class: "h-auto " <> Enum.join(@class)
+      ) }}
     </LivePatch>
     """
   end

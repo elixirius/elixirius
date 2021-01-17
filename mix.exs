@@ -68,7 +68,8 @@ defmodule Elixirius.MixProject do
       {:makeup, "~> 1.0.5"},
       {:makeup_elixir, "~> 0.15.0"},
       {:atomic_map, "~> 0.8"},
-      {:earmark, "~> 1.4.10"}
+      {:earmark, "~> 1.4.10"},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 

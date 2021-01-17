@@ -4,12 +4,13 @@ defmodule ElixiriusWeb.Components.Layouts.AuthLayout do
   slot default
 
   prop flash, :map
+  prop heading, :string, required: true
 
   # --- Component
 
   def render(assigns) do
     ~H"""
-    <div>
+    <div class="bg-gray-50 h-full flex flex-col">
       <p
         :if={{ live_flash(@flash, :info) }}
         class="alert alert-info"
@@ -26,12 +27,21 @@ defmodule ElixiriusWeb.Components.Layouts.AuthLayout do
         {{ live_flash(@flash, :error) }}
       </p>
 
-      <main class="p-8">
-        <div class="flex flex-col justify-center items-center space-y-6">
-          <UI.Logo type="logo-full" to={{ Routes.home_index_path(@socket, :index) }} />
+      <main class="p-8 space-y-6">
+        <div class="flex flex-col justify-center items-center space-y-3">
+          <UI.Logo
+            type="logo"
+            class="w-10"
+            to={{ Routes.home_index_path(@socket, :index) }}
+          />
+
+          <h1 class="text-center text-2xl font-black mb-6">{{ @heading }}</h1>
         </div>
 
-        <slot />
+        <div class="p-8 rounded bg-white max-w-sm mx-auto border border-gray-100 shadow-sm">
+          <slot />
+        </div>
+
       </main>
     </div>
     """

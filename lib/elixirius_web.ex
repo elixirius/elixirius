@@ -62,7 +62,7 @@ defmodule ElixiriusWeb do
 
   def surface_live_view do
     quote do
-      use Surface.LiveView
+      use Surface.LiveView, container: {:div, class: "h-full"}
 
       alias Surface.Components.Context
       alias ElixiriusWeb.Components, as: UI

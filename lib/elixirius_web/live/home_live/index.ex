@@ -21,7 +21,7 @@ defmodule ElixiriusWeb.HomeLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }}>
+    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Welcome to Elixirius!">
       <div class="grid place-items-center h-full">
         <nav class="flex items-center space-x-6 text-gray-600">
           <LivePatch to={{ Routes.home_join_path(@socket, :new) }} class="flex items-center space-x-2">

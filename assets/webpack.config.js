@@ -1,15 +1,16 @@
-const path = require('path');
-const glob = require('glob');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path')
+const glob = require('glob')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { ESBuildPlugin, ESBuildMinifyPlugin } = require('esbuild-loader')
 
 module.exports = (env, options) => {
-  const devMode = options.mode !== 'production';
+  const devMode = options.mode !== 'production'
 
   return {
     entry: {
-      'app': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
+      app: glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
     },
     output: {
       path: path.resolve(__dirname, '../priv/static/js'),
@@ -20,35 +21,42 @@ module.exports = (env, options) => {
       rules: [
         {
           test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader'
+          loader: 'esbuild-loader',
+          options: {
+            target: 'es2015'
           }
         },
         {
           test: /\.css$/,
           use: [
             MiniCssExtractPlugin.loader,
-            'css-loader',
-            'postcss-loader',
-          ],
+            {
+              loader: 'css-loader',
+              options: {
+                url: false
+              }
+            },
+            'postcss-loader'
+          ]
         }
       ]
     },
     plugins: [
+      new ESBuildPlugin(),
       new MiniCssExtractPlugin({ filename: '../css/app.css' }),
       new CopyWebpackPlugin({
-        patterns: [
-          {from: 'static/', to: '../'}
-        ]
+        patterns: [{ from: 'static/', to: '../' }]
       })
     ],
     optimization: {
       minimizer: [
         '...',
-        new CssMinimizerPlugin()
+        new CssMinimizerPlugin(),
+        new ESBuildMinifyPlugin({
+          target: 'es2015'
+        })
       ]
     },
     devtool: devMode ? 'source-map' : undefined
   }
-};
+}

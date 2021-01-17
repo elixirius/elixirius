@@ -4,7 +4,7 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
   alias Surface.Components.{
     Form,
     Form.Field,
-    Form.TextInput,
+    Form.EmailInput,
     Form.Label,
     Form.ErrorTag
   }
@@ -15,13 +15,9 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }}>
+    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Forgot your password?">
       <div class="grid place-items-center h-full">
-        <UI.Heading>
-          Forgot your password?
-        </UI.Heading>
-
-        <div class="space-y-6">
+        <div class="space-y-6 mb-6">
           <Form
             opts={{ class: "space-y-3" }}
             for={{ :user }}
@@ -30,17 +26,19 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
 
             <Field name="email">
               <Label/>
-              <TextInput />
+              <EmailInput opts={{ required: true }} />
               <ErrorTag />
             </Field>
 
-            <button
-              class="button-primary"
-              type="submit"
-              phx-disable-with="Sending..."
-            >
-              Send instructions to reset password
-            </button>
+            <div class="flex justify-center">
+              <button
+                class="button-primary"
+                type="submit"
+                phx-disable-with="Sending..."
+              >
+                Send instructions
+              </button>
+            </div>
           </Form>
         </div>
 
