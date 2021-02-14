@@ -1,4 +1,5 @@
 defmodule ElixiriusWeb.Components.Canvas do
+  @moduledoc false
   use Surface.LiveComponent
 
   import Elixirius.State
@@ -135,9 +136,7 @@ defmodule ElixiriusWeb.Components.Canvas do
       Map.get_and_update(
         NaryTree.get(socket.assigns.node_tree, current_node_id).content,
         :attr,
-        fn old_value ->
-          {old_value, Map.merge(old_value, map_keys_to_atoms(Map.drop(node, ["id", "node_id"])))}
-        end
+        &{&1, Map.merge(&1, map_keys_to_atoms(Map.drop(node, ["id", "node_id"])))}
       )
 
     {_old_node, new_tree} =
@@ -152,10 +151,10 @@ defmodule ElixiriusWeb.Components.Canvas do
      |> assign(node_tree: new_tree)}
   end
 
-  def handle_event("remove_node_from_tree", value, socket) do
-    id = get_node_by_id(socket.assigns.node_tree, value["id"]).id
+  def handle_event("remove_node_from_tree", %{"id" => id}, socket) do
+    new_id = get_node_by_id(socket.assigns.node_tree, id).id
 
-    new_tree = NaryTree.delete(socket.assigns.node_tree, id)
+    new_tree = NaryTree.delete(socket.assigns.node_tree, new_id)
 
     {:noreply,
      socket

@@ -1,4 +1,5 @@
 defmodule ElixiriusWeb.Components.Components do
+  @moduledoc false
   use Surface.Component
 
   def render(assigns) do
@@ -25,7 +26,5 @@ defmodule ElixiriusWeb.Components.Components do
 
   # --- Helpers
 
-  defp available_components() do
-    ["Card", "Button", "Heading", "TextInput", "Form", "Label"]
-  end
+  defp available_components, do: ["Card"]
 end

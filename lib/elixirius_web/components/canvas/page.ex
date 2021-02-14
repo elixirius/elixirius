@@ -25,7 +25,7 @@ defmodule ElixiriusWeb.Components.Page do
           }
         })
       "}}
-      class="bg-white w-full p-8 overflow-auto max-w-7xl w-full border border-gray-200 mx-auto text-gray-700 flex-1"
+      class="bg-white w-full p-8 overflow-auto max-w-7xl border border-gray-200 mx-auto text-gray-700 flex-1"
       :class="{ 'bg-indigo-50 border-indigo-500': adding }">
       <slot />
     </div>

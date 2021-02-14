@@ -1,4 +1,6 @@
 defmodule Elixirius.State do
+  @moduledoc false
+
   def get_default_state do
     home_page =
       NaryTree.Node.new("Page", %{
@@ -58,9 +60,7 @@ defmodule Elixirius.State do
   end
 
   def get_page_nodes(state, page_id) do
-    Enum.filter(state, fn node ->
-      Map.has_key?(node.content, :page_id) && node.content.page_id == page_id
-    end)
+    Enum.filter(state, &(Map.has_key?(&1.content, :page_id) && &1.content.page_id == page_id))
   end
 
   def get_default_page_id(state) do
@@ -73,7 +73,7 @@ defmodule Elixirius.State do
   end
 
   def get_node_by_id(state, node_id) do
-    Enum.find(state, fn node -> node.content.id == node_id end)
+    Enum.find(state, &(&1.content.id == node_id))
   end
 
   defp get_attr(attr), do: Map.merge(attr, %{__surface__: %{provided_templates: []}})

@@ -1,4 +1,5 @@
 defmodule ElixiriusWeb.Components.NodeTree do
+  @moduledoc false
   use Surface.Component
 
   import Elixirius.State
@@ -42,25 +43,21 @@ defmodule ElixiriusWeb.Components.NodeTree do
         canvas_id: canvas_id
       }}>
         <For each={{ node <- nodes }}>
-          <li :if={{ get_node_by_id(@nodes, node) != nil }} id={{ get_node_by_id(@nodes, node).content.id }}>
+          <li id={{ node.content.id }}>
             <button
               class={{
-                "p-2 w-full text-left border text-xs flex items-center space-x-2 rounded transition",
-                "border-indigo-500 bg-indigo-500 text-white hover:bg-indigo-500": active_component_id == get_node_by_id(@nodes, node).content.id,
-                "border-transparent hover:bg-gray-100 text-gray-500": active_component_id != get_node_by_id(@nodes, node).content.id
+                "p-2 w-full border text-xs flex space-x-2 rounded transition justify-start",
+                "border-indigo-500 bg-indigo-500 text-white hover:bg-indigo-500": active_component_id == node.content.id,
+                "bg-gray-50 border-gray-100 hover:bg-gray-100 text-gray-500": active_component_id != node.content.id
               }}
               :on-click={{ set_active_component_id }}
               phx-target="#{{ canvas_id }}"
-              phx-value-id={{ node }}
-              title={{ get_node_by_id(@nodes, node).content.id }}>
+              phx-value-id={{ node.content.id }}
+              title={{ node.content.id }}>
               <span class="font-bold">
-                {{ get_node_by_id(@nodes, node).content.element }}
+                {{ node.content.element }}
               </span>
             </button>
-
-            <span :if={{ get_node_by_id(@nodes, node).children != %{} }}>
-              {{ render_node(assigns, get_node_by_id(@nodes, node).children) }}
-            </span>
           </li>
         </For>
       </Context>

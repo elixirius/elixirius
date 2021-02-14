@@ -38,11 +38,11 @@ defmodule ElixiriusWeb.Components.UserNav do
           </div>
         </div>
         <div :if={{ is_nil(current_user) }}>
-          <LiveRedirect to={{ user_registration_path(@socket, :new) }}>
+          <LiveRedirect to={{ user_registration_path(@socket, :create) }}>
             Register
           </LiveRedirect>
 
-          <LiveRedirect to={{ user_session_path(@socket, :new) }}>
+          <LiveRedirect to={{ user_session_path(@socket, :create) }}>
             Log in
           </LiveRedirect>
         </div>
