@@ -60,7 +60,7 @@ defmodule Elixirius.MixProject do
       {:secure_random, "~> 0.5.1"},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:vex, "~> 0.8.0"},
-      {:surface, "~> 0.1.1"},
+      {:surface, "~> 0.2.1"},
       {:phoenix_inline_svg, "~> 1.4"},
       {:porcelain, "~> 2.0"},
       {:nary_tree, ">= 0.0.0"},

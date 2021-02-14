@@ -1,18 +1,21 @@
 defmodule ElixiriusWeb.HomeLive.Join do
+  @moduledoc false
   use ElixiriusWeb, :surface_live_view
-
-  alias Surface.Components.{
-    Form,
-    Form.Field,
-    Form.TextInput,
-    Form.EmailInput,
-    Form.PasswordInput,
-    Form.Label,
-    Form.ErrorTag
-  }
 
   alias Elixirius.Accounts
   alias Elixirius.Accounts.User
+
+  alias Surface.Components.{
+    Form,
+    Form.EmailInput,
+    Form.ErrorTag,
+    Form.Field,
+    Form.Label,
+    Form.PasswordInput,
+    Form.TextInput
+  }
+
+  prop changeset, :any
 
   prop changeset, :any
 
