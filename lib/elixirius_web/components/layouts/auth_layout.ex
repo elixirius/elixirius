@@ -3,7 +3,7 @@ defmodule ElixiriusWeb.Components.Layouts.AuthLayout do
 
   slot default
 
-  prop flash, :map
+  prop flash_payload, :map
   prop heading, :string, required: true
 
   # --- Component
@@ -12,19 +12,19 @@ defmodule ElixiriusWeb.Components.Layouts.AuthLayout do
     ~H"""
     <div class="bg-gray-50 h-full flex flex-col">
       <p
-        :if={{ live_flash(@flash, :info) }}
+        :if={{ live_flash(@flash_payload, :info) }}
         class="alert alert-info"
         role="alert"
       >
-        {{ live_flash(@flash, :info) }}
+        {{ live_flash(@flash_payload, :info) }}
       </p>
 
       <p
-        :if={{ live_flash(@flash, :error) }}
+        :if={{ live_flash(@flash_payload, :error) }}
         class="alert alert-danger"
         role="alert"
       >
-        {{ live_flash(@flash, :error) }}
+        {{ live_flash(@flash_payload, :error) }}
       </p>
 
       <main class="p-8 space-y-6">

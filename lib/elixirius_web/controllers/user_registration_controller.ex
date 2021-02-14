@@ -4,7 +4,6 @@ defmodule ElixiriusWeb.UserRegistrationController do
   use ElixiriusWeb, :controller
 
   alias Elixirius.Accounts
-  alias Elixirius.Accounts.User
   alias ElixiriusWeb.{UserAuth, HomeLive}
 
   def create(conn, %{"user" => user_params}) do
@@ -20,7 +19,7 @@ defmodule ElixiriusWeb.UserRegistrationController do
         |> put_flash(:info, "User created successfully.")
         |> UserAuth.log_in_user(user)
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, %Ecto.Changeset{} = _changeset} ->
         live_render(conn, HomeLive.Join)
     end
   end

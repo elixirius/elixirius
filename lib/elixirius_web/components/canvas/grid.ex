@@ -3,6 +3,8 @@ defmodule ElixiriusWeb.Components.Canvas.Grid do
 
   prop on_click, :event
 
+  slot default
+
   def render(assigns) do
     ~H"""
     <div class="flex flex-col w-full flex-1">

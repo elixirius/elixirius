@@ -28,7 +28,7 @@ defmodule Elixirius.Template do
     end
   end
 
-  defp prepare_directory(project_id) do
+  defp prepare_directory(_project_id) do
     File.mkdir_p(@projects_dir)
 
     true

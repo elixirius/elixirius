@@ -7,6 +7,8 @@ defmodule ElixiriusParts.Card do
   @doc "Aria label"
   prop aria_label, :string, default: ""
 
+  slot default
+
   # --- Component
 
   def render(assigns) do
@@ -20,12 +22,5 @@ defmodule ElixiriusParts.Card do
       </div>
     </div>
     """
-  end
-
-  # --- Helpers
-
-  defp get_html(markdown) do
-    {_status, html_doc, _errors} = Earmark.as_html(markdown)
-    html_doc
   end
 end

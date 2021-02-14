@@ -17,8 +17,6 @@ defmodule ElixiriusWeb.HomeLive.Join do
 
   prop changeset, :any
 
-  prop changeset, :any
-
   # -- Events
 
   # @impl true
@@ -34,7 +32,7 @@ defmodule ElixiriusWeb.HomeLive.Join do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Sign up for a new account">
+    <UI.Layouts.AuthLayout flash_payload={{ @flash }} heading="Sign up for a new account">
       <div class="grid place-items-center h-full">
         <div class="space-y-6 mb-6">
           <Form

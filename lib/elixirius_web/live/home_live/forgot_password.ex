@@ -15,7 +15,7 @@ defmodule ElixiriusWeb.HomeLive.ForgotPassword do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Forgot your password?">
+    <UI.Layouts.AuthLayout flash_payload={{ @flash }} heading="Forgot your password?">
       <div class="grid place-items-center h-full">
         <div class="space-y-6 mb-6">
           <Form
