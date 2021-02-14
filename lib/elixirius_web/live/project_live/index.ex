@@ -56,7 +56,7 @@ defmodule ElixiriusWeb.ProjectLive.Index do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user }}>
-      <UI.Layouts.AppLayout flash={{ @flash }}>
+      <UI.Layouts.AppLayout flash_payload={{ @flash }}>
         <div
           :if={{ Enum.count(@projects) > 0 }}
           class="flex justify-between items-center">

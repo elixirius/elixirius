@@ -1,7 +1,7 @@
 defmodule Elixirius.Constructor.Tree do
   alias Elixirius.Constructor.Page
 
-  def build(%Page{} = page) do
+  def build(%Page{} = _page) do
     home_page =
       NaryTree.Node.new("Page", %{
         id: UUID.uuid1(),

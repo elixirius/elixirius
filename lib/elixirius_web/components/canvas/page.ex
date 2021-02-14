@@ -4,6 +4,8 @@ defmodule ElixiriusWeb.Components.Page do
   prop id, :string, required: true
   prop canvas_id, :string, required: true
 
+  slot default
+
   def render(assigns) do
     ~H"""
     <div

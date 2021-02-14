@@ -44,7 +44,7 @@ defmodule ElixiriusWeb.HomeLive.ResetPassword do
   @impl true
   def render(assigns) do
     ~H"""
-    <UI.Layouts.AuthLayout flash={{ @flash }} heading="Set new password">
+    <UI.Layouts.AuthLayout flash_payload={{ @flash }} heading="Set new password">
       <div class="grid place-items-center h-full">
         <div class="space-y-6 mb-6">
           <Form

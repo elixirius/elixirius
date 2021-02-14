@@ -5,7 +5,7 @@ defmodule ElixiriusWeb.Components.Layouts.AppLayout do
 
   slot default
 
-  prop flash, :map
+  prop flash_payload, :map
   prop no_padding, :boolean, default: false
 
   # --- Component
@@ -14,19 +14,19 @@ defmodule ElixiriusWeb.Components.Layouts.AppLayout do
     ~H"""
     <div class="flex flex-col h-full">
       <p
-        :if={{ live_flash(@flash, :info) }}
+        :if={{ live_flash(@flash_payload, :info) }}
         class="alert alert-info"
         role="alert"
       >
-        {{ live_flash(@flash, :info) }}
+        {{ live_flash(@flash_payload, :info) }}
       </p>
 
       <p
-        :if={{ live_flash(@flash, :error) }}
+        :if={{ live_flash(@flash_payload, :error) }}
         class="alert alert-danger"
         role="alert"
       >
-        {{ live_flash(@flash, :error) }}
+        {{ live_flash(@flash_payload, :error) }}
       </p>
 
       <UI.Header />

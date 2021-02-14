@@ -43,7 +43,7 @@ defmodule ElixiriusWeb.ProjectLive.Show do
   def render(assigns) do
     ~H"""
     <Context put={{ current_user: @current_user, project: @project }}>
-      <UI.Layouts.AppLayout flash={{ @flash }} no_padding>
+      <UI.Layouts.AppLayout flash_payload={{ @flash }} no_padding>
         <UI.Modal
           :if={{ @live_action in [:setup] }}
           id={{ "project-setup" }}
