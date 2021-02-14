@@ -97,6 +97,48 @@ defmodule Elixirius.ConstructorTest do
     end
   end
 
+  describe "get_page/2"do
+    test "read page config" do
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
+      {:ok, page} = Constructor.add_page(app, "index")
+      Constructor.add_element(page, "Card")
+      Constructor.add_page(app, "about")
+
+      {:ok, index_page} = Constructor.get_page(app)
+      {:ok, about_page} = Constructor.get_page(app, "about")
+
+      assert index_page == %Page{
+        id: "index",
+        project: project_id,
+        elements: [
+          %Element{
+            id: "card_1",
+            type: "Card",
+            parent: nil,
+            position: 1,
+            data: %{},
+            view: %{}
+          }
+        ]
+      }
+
+      assert about_page == %Page{
+        id: "about",
+        project: project_id,
+        elements: []
+      }
+    end
+
+    test "return error if page not exists" do
+      project_id = generate_unique_project_id()
+      {:ok, app} = Constructor.init_app(project_id, "SampleApp")
+      {:error, msg} = Constructor.get_page(app, "missing")
+
+      assert msg == :not_exists
+    end
+  end
+
   describe "add_element/3" do
     test "add element into page config" do
       project_id = generate_unique_project_id()

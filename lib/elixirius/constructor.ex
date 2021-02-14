@@ -93,6 +93,31 @@ defmodule Elixirius.Constructor do
   end
 
   @doc """
+  Get page
+
+  ## Examples
+      iex> {:ok, app} = Constructor.get_page("sample-app")
+      iex> {:ok, index_page} = Constructor.get_page(app)
+      iex> {:ok, about_page} = Constructor.get_page(app, "about")
+      iex> index_page
+      %Page{project: "sample-app", id: "index"}
+      iex> about_page
+      %Page{project: "sample-app", id: "about_page"}
+
+
+  ## Errros
+      # Page not exists
+      iex> {:error, :not_exists} = Constructor.get_page(app, "missing_page")
+  """
+  def get_page(%App{} = app, page_id \\ "index") do
+    with {:ok, page} <- Repo.get_page(app, page_id) do
+      {:ok, page}
+    else
+      error -> error
+    end
+  end
+
+  @doc """
   Add an element to the page
 
   ## Examples
@@ -165,8 +190,4 @@ defmodule Elixirius.Constructor do
       error -> error
     end
   end
-
-  # TODO: build page elements as multi-level nested tree. Recursion...
-  # def build_page_tree_map(page) do
-  # end
 end

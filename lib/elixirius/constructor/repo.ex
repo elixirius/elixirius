@@ -5,7 +5,7 @@ defmodule Elixirius.Constructor.Repo do
   @path_delim "/"
   @pages_dir "pages"
 
-  alias Elixirius.Constructor.{App, Page}
+  alias Elixirius.Constructor.{App, Page, Element}
 
   def init_store(%App{} = app) do
     workdir = build_workdir_path(app.id)
@@ -58,6 +58,21 @@ defmodule Elixirius.Constructor.Repo do
     end
   end
 
+  def get_page(%App{} = app, page_id \\ "index") do
+    with page_path <- build_page_path(app.id, page_id),
+         {:ok, file_data} <- File.read(page_path),
+         {:ok, json} <- Jason.decode(file_data, keys: :atoms) do
+      {:ok, %Page{
+        project: json[:project],
+        id: json[:id],
+        elements: Enum.map(json[:elements], fn(elem) -> struct(Element, elem) end)
+      }}
+    else
+      {:error, :enoent} -> {:error, :not_exists}
+      error -> error
+    end
+  end
+
   defp build_workdir_path(slug) do
     [@root_dir, slug, @elixirius_dir]
     |> Enum.join(@path_delim)
@@ -70,6 +85,11 @@ defmodule Elixirius.Constructor.Repo do
 
   defp build_page_path(page) do
     [@root_dir, page.project, @elixirius_dir, @pages_dir, "#{page.id}.json"]
+    |> Enum.join(@path_delim)
+  end
+
+  defp build_page_path(project_dir, page_id) do
+    [@root_dir, project_dir, @elixirius_dir, @pages_dir, "#{page_id}.json"]
     |> Enum.join(@path_delim)
   end
 end

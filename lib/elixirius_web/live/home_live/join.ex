@@ -17,6 +17,8 @@ defmodule ElixiriusWeb.HomeLive.Join do
 
   prop changeset, :any
 
+  prop changeset, :any
+
   # -- Events
 
   # @impl true
