@@ -3,7 +3,7 @@ const glob = require('glob')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { ESBuildPlugin, ESBuildMinifyPlugin } = require('esbuild-loader')
+const { ESBuildMinifyPlugin } = require('esbuild-loader')
 
 module.exports = (env, options) => {
   const devMode = options.mode !== 'production'
@@ -42,7 +42,6 @@ module.exports = (env, options) => {
       ]
     },
     plugins: [
-      new ESBuildPlugin(),
       new MiniCssExtractPlugin({ filename: '../css/app.css' }),
       new CopyWebpackPlugin({
         patterns: [{ from: 'static/', to: '../' }]
